@@ -163,13 +163,47 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 -   **list_display** to display the model fields.
 
--   **list_filter** to add filters to the models.
+```python
+list_display = ["first_name", "last_name", "age", "grade"]
+```
 
--   **search_fields** for a search box with fields that will be searched.
+-   **list_filter** to add filters to the model.
 
--   **fields** for layout changes on "Add" and "Change" pages.
+```python
+list_filter = ["age", "grade", "date_of_birth"]
+```
 
--   **fieldsets** to customize the layout of "Add" and "Change" pages.
+-   **search_fields** for a search box with fields that will be searched. Default is all fields.
+
+```python
+search_fields = ["first_name"]
+```
+
+-   **fields** for layout changes on "Add" and "Change" pages such as showing only a subset of available fields, modifying their order, or grouping them into rows.
+
+```python
+class EmployeeAdmin(admin.ModelAdmin):
+    fields = [('first_name', 'last_name'), 'email_address']
+```
+
+-   **fieldsets** to customize the layout of "Add" and "Change" pages. `fieldsets` is a list of 2-tuples, in which each 2-tuple represents a `section` of the form.
+
+```python
+class StudentAdmin(admin.ModelAdmin):
+
+    fieldsets = [
+        ("Personal Information", {"fields": ["first_name", "last_name"]}),
+        ("Academic Information", {"fields": ["grade"]})
+    ]
+```
+
+-   **date_hierarchy** to include a date-based drilldown navigation by that field.
+
+```python
+date_hierarchy = "birth_date"
+```
+
+-   **list_per_page** to control how many items appear on each paginated. Default is 100.
 
 ---
 

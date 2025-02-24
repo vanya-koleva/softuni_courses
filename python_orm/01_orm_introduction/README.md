@@ -178,7 +178,7 @@ Naviggate to the directory with `cd`
 ```bash
 python3 -m venv .venv
 
-source .venv/bin/activate   # venv\Scripts\activate for Windows
+source .venv/bin/activate   # .venv\Scripts\activate for Windows
 
 pip install -r requirements.txt     
 
