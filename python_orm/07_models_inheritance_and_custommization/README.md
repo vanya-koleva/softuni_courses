@@ -152,21 +152,57 @@ class Animal(models.Model):
 
 -   Built-in custom field methods:
 
-    -   **`from_db_value(value, expression, connection)`** - Called when retrieving the value **from the database** and converting it **into a Python** object.
+    -   **`from_db_value(value, expression, connection)`** - DB → Python
+
+        -   Called when retrieving the value **from the database** and converting it **into a Python** object.
 
         -   It is only used for database-to-Python conversion
 
-    -   **`to_python(value)`** - **For validation**. Called during deserialization or when using the `clean()` method to ensure the value is in the correct Python format.
+        -   Calls `to_python()`.
+
+    -   **`to_python(value)`** - Any Input (DB, serialization, forms) → Python
+
+        -   **For validation**. Called during deserialization or when using the `clean()` method **to ensure the value is in the correct Python format**.
 
         -   ValidationError
-        -   Ensures that all assigned values are properly converted to a Python-compatible type.
+
         -   Always used internally by Django forms and field validation.
 
-    -   **`get_prep_value(value)`** - The reverse of `from_db_value`, converting a Python object into a format suitable for storage in the database. Mainly used for serialization.
+        -   In fact, it works both from the db to python and vice versa because internally the validations are in to_python() and it is called by other methods (even though it does not directly handle the Python → DB process).
 
-    -   **`pre_save(model_instance, add)`** - Used for **last-minute changes** before saving the object to the database.
+    -   **`get_prep_value(value)`** - Python → DB
 
-    -   **`validate(value, model_instance)`** - Called by `full_clean()`. Used for **field-level validation** before saving data to the database (only triggered for the specific field in which it is implemented, not for the whole model).
+        -   The reverse of `from_db_value`, converting a Python object into a format suitable for storage in the database.
+
+        -   Mainly used for serialization.
+
+        -   Calls `to_python()`.
+
+    -   **`pre_save(model_instance, add)`** - Python → DB (before saving)
+
+        -   Used for **last-minute changes** before saving the object to the database.
+
+    -   **`validate(value, model_instance)`** - Python-side validation
+
+        -   Called by `full_clean()`.
+
+        -   Used for **field-level validation** before saving data to the database (only triggered for the specific field for which it is implemented, not for the whole model).
+
+    -   **`deconstruct()`** - returns a 4-tuple of values that can be used to rebuild the field. It's mainly used by Django when it needs to create database migrations for custom fields.
+
+        -   Required when adding **custom attributes** (e.g., extra_option=True) to a field that Django's built-in fields (e.g., CharField) do not recognize and we put them in the `__init__`.
+
+        -   If we do not put them in `__init__`, deconstruct() is not needed.
+
+        -   4-part tuple: `(name, path, args, kwargs)`:
+
+            -   **name (str)**: The name of the field instance.
+
+            -   **path (str)**: The full Python import path of the field class. Example: "django.db.models.CharField"
+
+            -   **args (list or tuple)**: The positional arguments passed to the field when it was created. Example: If a field is defined as models.CharField("Title", max_length=100), the first argument "Title" (verbose name) goes into args.
+
+            -   **kwargs (dict)**: The keyword arguments (optional parameters) passed when the field was defined. Example: max_length=100, null=True, default="hello", etc.
 
 -   A good practice is to use `to_python()` instead of returning the result directly from `from_db_value()` to maintain consistency and ensure that the same conversion logic is applied regardless of where the data comes from.
 
