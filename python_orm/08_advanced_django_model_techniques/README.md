@@ -45,12 +45,51 @@ class SampleModel(models.Model):
 
     -   A good practice is to write them in **validators.py**
 
+    -   Best implemented as classes for better readability, flexibility, reusability, and customization compared to function-based validators.
+
+        -   **Serialization** is the process of converting complex data types (such as Django model instances) into formats like JSON, XML, or YAML so that they can be easily rendered, stored, or transmitted.
+
+        -   Function-based validators are not serialized by Django, while class-based are.
+
+        -   Django must be able to retrieve the validator's **path, arguments, and keyword arguments** so that it can be stored in migrations.
+
+            -   This can be achieved by inheriting from `BaseValidator` - when we have a value to compare against.
+
+            -   Or by decorating it with `@deconstructible`.
+
+        -   Be careful how you name class-based validators and where you create them because they are recorded into the migrations.
+
+-   Function validator example:
+
 ```python
 from django.core.exceptions import ValidationError
 
 def validate_even(value):
     if value % 2 != 0:
         raise ValidationError('Value must be an even number!')
+```
+
+-   Class validator example:
+
+```python
+@deconstructible
+class NameValidator:
+    def __init__(self, message: str):
+        self.message = message
+
+    def __call__(self, value: str):
+        for char in value:
+            if not (char.isalpha() or char.isspace()):
+                raise ValidationError(self.message)
+
+
+class Customer(models.Model):
+    name = models.CharField(
+        max_length=100,
+        validators=[
+            NameValidator(message="Name can only contain letters and spaces"),
+        ]
+    )
 ```
 
 ## Meta Options and Meta Inheritance
@@ -185,5 +224,46 @@ class TimestampMixin(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 	class Meta:
     	    abstract = True
+```
+
+## Misc
+
+-   The `error_messages` argument in Django model fields allows us to override the default validation error messages for specific error types.
+
+```python
+class Customer(models.Model):
+    email = models.EmailField(
+        error_messages={'invalid': "Enter a valid email address"},
+    )
+```
+
+-   `SearchVectorField()` - stores precomputed search vectors for full-text search in PostgreSQL, allowing us to search with similarity.
+
+    -   STEPS for vector fields in PostgreSQL:
+
+        -   **STEP 1 tokenization** -> split text to words -> "The running brown dog is in a run" -> [The, running, ...]
+
+        -   **STEP 2 Remove repetions** -> [The, running, ...] -> [run, brown, dog]
+
+        -   **STEP 3 Create lexems** -> [run: 2; 8, brown: 3, dog: 4] - The numbers represent positions in the text.
+
+        -   Example:
+
+            -   select to_tsvector('The running brown') @@ plainto_tsquery('runs'); -> true
+
+            -   select to_tsvector('The brown') @@ plainto_tsquery('runs'); -> false
+
+            -   plainto_tsquery('runs') -> 'run' - Searches in to_tsvector()
+
+            -   to_tsvector('The running brown') -> ['run': 2, 'brown': 3]
+
+```python
+from django.contrib.postgres.search import SearchVectorField
+
+
+class Document(models.Model):
+    search_vector = SearchVectorField(
+        null=True,
+    )
 ```
 
