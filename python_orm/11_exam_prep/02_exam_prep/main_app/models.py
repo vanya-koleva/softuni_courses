@@ -1,6 +1,7 @@
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 
+from main_app.managers import ProfileManager
 from main_app.mixins import CreationDateMixin
 
 
@@ -17,6 +18,8 @@ class Profile(CreationDateMixin):
     is_active = models.BooleanField(
         default=True
     )
+
+    objects = ProfileManager()
 
 
 class Product(CreationDateMixin):
