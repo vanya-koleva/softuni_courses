@@ -7,6 +7,8 @@ django.setup()
 
 from main_app.models import Profile, Product, Order
 from django.db.models.query_utils import Q
+from django.db.models.aggregates import Count
+from django.db.models.expressions import F, Case, When, Value
 
 
 def populate_db() -> None:
@@ -104,3 +106,53 @@ def get_last_sold_products() -> str:
     products_names = [p.name for p in last_order.products.all()]
 
     return f"Last sold products: {', '.join(products_names)}"
+
+def get_top_products() -> str:
+    top_products = Product.objects.annotate(
+        orders_count=Count('order')
+    ).filter(
+        orders_count__gt=0
+    ).order_by('-orders_count', 'name')[:5]
+
+    if not top_products:
+        return ""
+
+    return "Top products:\n" + "\n".join(
+        f"{p.name}, sold {p.orders_count} times"
+        for p in top_products
+    )
+
+def apply_discounts() -> str:
+    updated_orders_count = Order.objects.annotate(
+        orders_count=Count('products')
+    ).filter(
+        orders_count__gt=2,
+        is_completed=False
+    ).update(
+        total_price=F('total_price') * 0.9
+    )
+
+    return f"Discount applied to {updated_orders_count} orders."
+
+def complete_order() -> str:
+    order = Order.objects.filter(
+        is_completed=False
+    ).order_by(
+        'creation_date'
+    ).first()
+
+    if order is None:
+        return ""
+
+    Product.objects.filter(order=order).update(
+        in_stock=F('in_stock') - 1,
+        is_available=Case(
+            When(in_stock=1, then=Value(False)),
+            default=F('is_available')
+        )
+    )
+
+    order.is_completed = True
+    order.save()
+
+    return "Order has been completed!"
