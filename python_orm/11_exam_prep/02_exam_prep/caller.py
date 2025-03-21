@@ -6,6 +6,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
 from main_app.models import Profile, Product, Order
+from django.db.models.query_utils import Q
 
 
 def populate_db() -> None:
@@ -60,3 +61,46 @@ def populate_db() -> None:
     )
     order2.save()
     order2.products.add(product2)
+
+def get_profiles(search_string=None) -> str:
+    if search_string is None:
+        return ""
+
+    profiles = Profile.objects.filter(
+        Q(full_name__icontains=search_string)
+        |
+        Q(email__icontains=search_string)
+        |
+        Q(phone_number__icontains=search_string)
+    ).order_by('full_name')
+
+    if not profiles:
+        return ""
+
+    return "\n".join(
+        f"Profile: {p.full_name},"
+        f" email: {p.email}, phone number: {p.phone_number},"
+        f" orders: {p.order_set.count()}"
+        for p in profiles
+    )
+
+def get_loyal_profiles() -> str:
+    profiles = Profile.objects.get_regular_customers()
+
+    if not profiles:
+        return ""
+
+    return "\n".join(
+        f"Profile: {p.full_name}, orders: {p.orders_count}"
+        for p in profiles
+    )
+
+def get_last_sold_products() -> str:
+    last_order = Order.objects.prefetch_related('products').last()
+
+    if not last_order or not last_order.products.exists():
+        return ""
+
+    products_names = [p.name for p in last_order.products.all()]
+
+    return f"Last sold products: {', '.join(products_names)}"
