@@ -1,6 +1,6 @@
 # Django ORM Cheatsheet
 
-## Basics
+## 1. Basics
 
 ### Get All Records
 
@@ -82,7 +82,7 @@ ModelName.objects.all()[:10]
 ModelName.objects.all()[5:10]
 ```
 
-## Field Lookups
+## 2. Field Lookups
 
 ```python
 # Exact Match / Case-Insensitive Match
@@ -126,7 +126,7 @@ ModelName.objects.filter(attribute__year=2025)
 Models.objects.filter(attribute__isnull=True)
 ```
 
-## Querying Related Objects
+## 3. Querying Related Objects
 
 ### Filter on Related Fields
 
@@ -140,11 +140,11 @@ ModelName.objects.filter(related_name__field=value)
 ModelName.objects.filter(related_name__field__gt=value)
 ```
 
-## Efficiently Querying Related Objects
+## 4. Efficiently Querying Related Objects
 
 ## `select_related()`
 
--to-one relationships (one-to-one, many-to-one)
+**-to-one** relationships (one-to-one, many-to-one)
 
 Child --> Parent
 
@@ -174,5 +174,110 @@ books_with_authors = Book.objects.select_related('author')
 # Accessing related data without extra queries
 for book in books_with_authors:
     print(book.author.name)  # No additional DB queries
+```
+
+## `prefetch_related()`
+
+**-to-many** relationships (one-to-many, many-to-many)
+
+Parent --> Child
+
+```python
+ModelName.objects.prefetch_related('many_to_many_field')
+```
+
+Example:
+
+```python
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    authors = models.ManyToManyField(Author)
+
+authors_with_books = Author.objects.prefetch_related('book_set')
+
+# 1. SELECT * FROM "myapp_author"
+# 2. SELECT *
+#    FROM "myapp_book"
+#    INNER JOIN "myapp_book_authors"
+#    ON ("myapp_book"."id" = "myapp_book_authors"."book_id")
+```
+
+## 5. Aggregation and Annotation
+
+Calculates values across the entire table. Reduces the query to a single row.
+
+Executes one SQL query instead of multiple.
+
+### `aggregate()`
+
+```python
+ModelName.objects.aggregate(
+    total=Sum('field'),
+    average=Avg('field'),
+    highest=Max('field'),
+    lowest=Min('field')
+)
+"""
+Output:
+{
+    'total': <sum_of_all_values> or None,
+    'average': <average_of_all_values> or None,
+    'highest': <maximum_value> or None,
+    'lowest': <minimum_value> or None,
+}
+"""
+```
+
+### `annotate()`
+
+Adds calculated values per record.
+
+```python
+ModelName.objects.annotate(
+    related_count=Count('related_name')
+)
+
+"""
+Output:
+<QuerySet [
+    ModelName(id=1, related_count=<count_of_related_objects>),
+    ...
+]>
+"""
+```
+
+Use `F()` to reference another field in calculations:
+
+```python
+ModelName.objects.annotate(
+    new_value=F('some_field') * 2
+)
+```
+
+Add a field from a related model:
+
+```python
+objs = ModelName.objects.annotate(extra_field=F("RelatedModel__field"))
+
+# Each object now has an additional attribute from the related model
+[obj.extra_field for obj in objs]
+```
+
+`values()` **Before** `annotate()` → Groups Results:
+
+```python
+# Get the count of books for each author
+authors_with_book_count = Book.objects.values('author').annotate(book_count=Count('id'))
+# `values('author')` → Groups the results by the author field.
+# annotate(book_count=Count('id')) → Counts the number of books (id) for each author.
+
+# Example output:
+# [
+#    {'author': 'J.K. Rowling', 'book_count': 7},
+#    {'author': 'George Orwell', 'book_count': 3}
+# ]
 ```
 
