@@ -142,7 +142,7 @@ ModelName.objects.filter(related_name__field__gt=value)
 
 ## 4. Efficiently Querying Related Objects
 
-## `select_related()`
+### `select_related()`
 
 **-to-one** relationships (one-to-one, many-to-one)
 
@@ -176,7 +176,7 @@ for book in books_with_authors:
     print(book.author.name)  # No additional DB queries
 ```
 
-## `prefetch_related()`
+### `prefetch_related()`
 
 **-to-many** relationships (one-to-many, many-to-many)
 
@@ -266,7 +266,9 @@ objs = ModelName.objects.annotate(extra_field=F("RelatedModel__field"))
 [obj.extra_field for obj in objs]
 ```
 
-`values()` **Before** `annotate()` → Groups Results:
+`values()` **Before** `annotate()` → **Groups** results.
+
+Selects only the fields specified in `values()`, and the annotated fields.
 
 ```python
 # Get the count of books for each author
@@ -279,5 +281,46 @@ authors_with_book_count = Book.objects.values('author').annotate(book_count=Coun
 #    {'author': 'J.K. Rowling', 'book_count': 7},
 #    {'author': 'George Orwell', 'book_count': 3}
 # ]
+```
+
+## 6. Query Expressions
+
+### `Q()`
+
+Filters in the database.
+
+```python
+# AND Condition
+ModelName.objects.filter(Q(field1=value1) &
+Q(field2=value2))
+
+# OR Condition
+ModelName.objects.filter(Q(field1=value1) |
+Q(field2=value2))
+
+# NOT Condition
+ModelName.objects.filter(~Q(field=value))
+```
+
+### `F()`
+
+References to a field's value (including related objects).
+
+```python
+ModelName.objects.update(field=F('other_field') * 2)
+```
+
+### `Case`
+
+`Value()` represents a literal value.
+
+`then=` and conditions can use `F()` or other expressions.
+
+```python
+ModelName.objects.annotate(new_field=Case(
+    When(condition,then=Value('result')),
+    default=Value('default')
+    )
+)
 ```
 
