@@ -2,6 +2,7 @@ from django.core.validators import MinLengthValidator, MinValueValidator, MaxVal
 from django.db import models
 
 from main_app.choices import ArticleCategoryChoices
+from main_app.managers import AuthorManager
 
 
 class ContentMixin(models.Model):
@@ -48,6 +49,8 @@ class Author(models.Model):
         blank=True,
         null=True,
     )
+
+    objects = AuthorManager()
 
 
 class Article(ContentMixin, PublishedOnMixin):
