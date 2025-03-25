@@ -2,6 +2,7 @@ from django.core.validators import MinLengthValidator, RegexValidator, MinValueV
 from django.db import models
 
 from main_app.choices import MissionStatusChoices
+from main_app.managers import AstronautManager
 from main_app.mixins import NameMixin, UpdatedAtMixin, LaunchDateMixin
 
 
@@ -26,6 +27,8 @@ class Astronaut(NameMixin, UpdatedAtMixin):
             MinValueValidator(0)
         ]
     )
+
+    objects = AstronautManager()
 
 
 class Spacecraft(NameMixin, UpdatedAtMixin, LaunchDateMixin):
