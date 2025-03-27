@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 from django.db import models
 
 from main_app.choices import DragonBreathChoices
+from main_app.managers import HouseManager
 from main_app.mixins import NameMixin, ModifiedAtMixin, WinsMixin
 
 
@@ -20,6 +21,8 @@ class House(NameMixin, ModifiedAtMixin, WinsMixin):
         blank=True,
         null=True,
     )
+
+    objects = HouseManager()
 
 
 class Dragon(NameMixin, ModifiedAtMixin, WinsMixin):
@@ -49,6 +52,7 @@ class Dragon(NameMixin, ModifiedAtMixin, WinsMixin):
     house = models.ForeignKey(
         House,
         on_delete=models.CASCADE,
+        related_name='dragons',
     )
 
 
