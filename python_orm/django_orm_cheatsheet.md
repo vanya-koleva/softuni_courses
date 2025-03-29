@@ -324,3 +324,13 @@ ModelName.objects.annotate(new_field=Case(
 )
 ```
 
+## Getting Data from QuerySets
+
+### `values()`
+Select only the specified fields.
+
+Returns a dictionary.
+
+```python
+ModelName.objects.values('field1','field2')
+```
