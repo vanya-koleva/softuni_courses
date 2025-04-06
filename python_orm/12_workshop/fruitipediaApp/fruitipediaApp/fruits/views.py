@@ -31,7 +31,9 @@ def create_fruit_view(request):
 
 
 def fruit_details_view(request, pk):
-    return render(request, "fruits/details-fruit.html")
+    fruit = Fruit.objects.get(id=pk)
+    context = {"fruit": fruit}
+    return render(request, "fruits/details-fruit.html", context)
 
 
 def edit_fruit_view(request, pk):
