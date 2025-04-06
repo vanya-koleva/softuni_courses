@@ -25,3 +25,10 @@ class FruitAddForm(FruitBaseForm):
 
 class FruitEditForm(FruitBaseForm):
     pass
+
+
+class DeleteFruitForm(FruitBaseForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.disabled = True
