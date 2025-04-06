@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Fruit, Category
 
 
 def index_view(request):
@@ -7,7 +8,10 @@ def index_view(request):
 
 
 def dashboard_view(request):
-    return render(request, "common/dashboard.html")
+    fruits = Fruit.objects.all()
+    context = {"fruits": fruits}
+
+    return render(request, "common/dashboard.html", context)
 
 
 def create_fruit_view(request):
