@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import CategoryForm
+from .forms import CategoryForm, FruitAddForm
 from .models import Fruit, Category
 
 
@@ -17,7 +17,17 @@ def dashboard_view(request):
 
 
 def create_fruit_view(request):
-    return render(request, "fruits/create-fruit.html")
+    if request.method == "GET":
+        form = FruitAddForm()
+    else:
+        form = FruitAddForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("dashboard")
+
+    context = {"form": form}
+
+    return render(request, "fruits/create-fruit.html", context)
 
 
 def fruit_details_view(request, pk):

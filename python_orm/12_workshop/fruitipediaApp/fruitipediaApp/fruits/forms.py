@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Category
+from .models import Category, Fruit
 
 
 class CategoryBaseForm(forms.ModelForm):
@@ -9,5 +9,15 @@ class CategoryBaseForm(forms.ModelForm):
         fields = '__all__'
 
 
+class FruitBaseForm(forms.ModelForm):
+    class Meta:
+        model = Fruit
+        fields = '__all__'
+
+
 class CategoryForm(CategoryBaseForm):
+    pass
+
+
+class FruitAddForm(FruitBaseForm):
     pass
