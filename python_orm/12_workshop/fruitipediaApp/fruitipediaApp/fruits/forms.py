@@ -21,3 +21,7 @@ class CategoryForm(CategoryBaseForm):
 
 class FruitAddForm(FruitBaseForm):
     pass
+
+
+class FruitEditForm(FruitBaseForm):
+    pass

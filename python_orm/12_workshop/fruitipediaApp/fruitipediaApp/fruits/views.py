@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .forms import CategoryForm, FruitAddForm
+from .forms import CategoryForm, FruitAddForm, FruitEditForm
 from .models import Fruit, Category
 
 
@@ -37,7 +37,18 @@ def fruit_details_view(request, pk):
 
 
 def edit_fruit_view(request, pk):
-    return render(request, "fruits/edit-fruit.html")
+    fruit = Fruit.objects.get(id=pk)
+    if request.method == "GET":
+        form = FruitEditForm(instance=fruit)
+    else:
+        form = FruitEditForm(request.POST, instance=fruit)
+        if form.is_valid():
+            fruit.save()
+            return redirect("dashboard")
+
+    context = {"form": form, "fruit": fruit}
+
+    return render(request, "fruits/edit-fruit.html", context)
 
 
 def delete_fruit_view(request, pk):
