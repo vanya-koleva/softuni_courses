@@ -11,7 +11,7 @@ engine = create_engine(
     pool_size=10,
     max_overflow=5,
     pool_timeout=10,
-    pool_recycle=1800,
+    pool_recycle=1800
 )
 Base = declarative_base()
 
