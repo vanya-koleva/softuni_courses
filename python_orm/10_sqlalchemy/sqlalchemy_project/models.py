@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import declarative_base, Relationship
 
 '''
@@ -17,8 +17,14 @@ class Employee(Base):
     last_name = Column(String(30), nullable=False, default='Nechitankov')
     age = Column(Integer)
     salary = Column(Integer)
+
     city_id = Column(Integer, ForeignKey('cities.id'), default=1)
     city = Relationship('City', back_populates='employees')
+
+    projects = Relationship('Project',
+        secondary='employee_project_association',
+        back_populates='employees'
+    )
 
 
 class City(Base):
@@ -26,3 +32,22 @@ class City(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(20))
     employees = Relationship('Employee', back_populates='city')
+
+
+employee_project_association = Table(
+    'employee_project',
+    Base.metadata,
+    Column('employee_id', Integer, ForeignKey('employees.id'), primary_key=True),
+    Column('project_id', Integer, ForeignKey('projects.id'), primary_key=True)
+)
+
+
+class Project(Base):
+    __tablename__ = 'projects'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20))
+
+    employees = Relationship('Employee',
+         secondary=employee_project_association,
+         back_populates='projects'
+    )
