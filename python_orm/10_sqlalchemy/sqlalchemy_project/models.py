@@ -18,7 +18,7 @@ class Employee(Base):
     age = Column(Integer)
     salary = Column(Integer)
 
-Base.metadata.create_all(engine)
+
 
 
 
