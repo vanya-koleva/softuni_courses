@@ -6,7 +6,13 @@ from sqlalchemy.orm import declarative_base, Relationship
 '''
 CONNECTION_STRING = 'postgresql+psycopg2://postgres-user:password@localhost:5432/sqlalchemy_test'
 
-engine = create_engine(CONNECTION_STRING)
+engine = create_engine(
+    CONNECTION_STRING,
+    pool_size=10,
+    max_overflow=5,
+    pool_timeout=10,
+    pool_recycle=1800,
+)
 Base = declarative_base()
 
 
