@@ -32,3 +32,11 @@ def create_recipe(name: str, ingredients: str, instructions: str) -> None:
     )
 
     session.add(new_recipe) # new_recipe.save()
+
+@handle_session(session)
+def update_recipe_by_name(name: str, new_name: str,  new_ingredients: str, new_instructions: str) -> None:
+    session.query(Recipe).filter_by(name=name).update({
+        Recipe.name: new_name,
+        Recipe.ingredients: new_ingredients,
+        Recipe.instructions: new_instructions,
+    })
