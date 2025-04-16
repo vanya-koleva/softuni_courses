@@ -40,3 +40,7 @@ def update_recipe_by_name(name: str, new_name: str,  new_ingredients: str, new_i
         Recipe.ingredients: new_ingredients,
         Recipe.instructions: new_instructions,
     })
+
+@handle_session(session)
+def delete_recipe_by_name(name: str) -> None:
+    session.query(Recipe).filter_by(name=name).delete()
