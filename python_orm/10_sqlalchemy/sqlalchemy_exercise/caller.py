@@ -12,3 +12,23 @@
 9. Tell alembic how to connect to the db - sqlalchemy.url = postgresql+psycopg2://postgres:admin@localhost/sql_alchemy_exercise
 
 """
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from helpers import handle_session
+from models import Recipe
+
+engine = create_engine('postgresql+psycopg2://postgres-user:password@localhost/sql_alchemy_exercise')
+Session = sessionmaker(bind=engine)
+session = Session()
+
+
+@handle_session(session)
+def create_recipe(name: str, ingredients: str, instructions: str) -> None:
+    new_recipe = Recipe(
+        name=name,
+        ingredients=ingredients,
+        instructions=instructions,
+    )
+
+    session.add(new_recipe) # new_recipe.save()
