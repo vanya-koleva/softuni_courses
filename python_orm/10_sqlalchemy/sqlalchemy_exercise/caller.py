@@ -12,6 +12,8 @@
 9. Tell alembic how to connect to the db - sqlalchemy.url = postgresql+psycopg2://postgres:admin@localhost/sql_alchemy_exercise
 
 """
+from typing import List, Type
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -33,6 +35,7 @@ def create_recipe(name: str, ingredients: str, instructions: str) -> None:
 
     session.add(new_recipe) # new_recipe.save()
 
+
 @handle_session(session)
 def update_recipe_by_name(name: str, new_name: str,  new_ingredients: str, new_instructions: str) -> None:
     session.query(Recipe).filter_by(name=name).update({
@@ -41,6 +44,14 @@ def update_recipe_by_name(name: str, new_name: str,  new_ingredients: str, new_i
         Recipe.instructions: new_instructions,
     })
 
+
 @handle_session(session)
 def delete_recipe_by_name(name: str) -> None:
     session.query(Recipe).filter_by(name=name).delete()
+
+
+@handle_session(session, autoclose=False)
+def get_recipes_by_ingredient(ingredient_name: str) -> List[Type[Recipe]]:
+    return session.query(Recipe).filter(
+        Recipe.ingredients.ilike(f"%{ingredient_name}%"),
+    ).all()

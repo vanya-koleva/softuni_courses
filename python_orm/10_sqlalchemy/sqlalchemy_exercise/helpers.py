@@ -1,4 +1,4 @@
-def handle_session(session):
+def handle_session(session, autoclose=True):
     def decorator(func):
         def wrapper(*args, **kwargs):
             try:
@@ -9,7 +9,8 @@ def handle_session(session):
                 session.rollback()
                 raise e
             finally:
-                session.close()
+                if autoclose:
+                    session.close()
 
         return wrapper
     return decorator
