@@ -55,3 +55,21 @@ def get_recipes_by_ingredient(ingredient_name: str) -> List[Type[Recipe]]:
     return session.query(Recipe).filter(
         Recipe.ingredients.ilike(f"%{ingredient_name}%"),
     ).all()
+
+
+@handle_session(session)
+def swap_recipe_ingredients_by_name(first_recipe_name: str, second_recipe_name: str) -> None:
+    first_recipe = (
+        session.query(Recipe)
+        .filter_by(name=first_recipe_name)
+        .with_for_update()  # locks the record preventing others to modify it until it's modified
+        .one()
+    )
+    second_recipe = (
+        session.query(Recipe)
+        .filter_by(name=second_recipe_name)
+        .with_for_update()
+        .one()
+    )
+
+    first_recipe.ingredients, second_recipe.ingredients = second_recipe.ingredients, first_recipe.ingredients
