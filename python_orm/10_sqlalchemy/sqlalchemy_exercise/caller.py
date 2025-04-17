@@ -86,3 +86,18 @@ def relate_recipe_with_chef_by_name(recipe_name: str, chef_name: str) -> str:
     recipe.chef = chef
 
     return f"Related recipe {recipe_name} with chef {chef_name}"
+
+
+@handle_session(session)
+def get_recipes_with_chef() -> str:
+    recipes_with_chef  = (
+        # SELECT recipe.name, chef.name AS recipe_name, chef_name
+        session.query(Recipe.name, Chef.name)
+        .join(Chef, Recipe.chef)
+        .all()
+    )
+
+    return "\n".join(
+        f"Recipe: {recipe_name} made by chef: {chef_name}"
+        for recipe_name, chef_name in recipes_with_chef
+    )
