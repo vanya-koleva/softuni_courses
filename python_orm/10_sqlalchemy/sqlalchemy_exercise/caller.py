@@ -18,7 +18,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from helpers import handle_session
-from models import Recipe
+from models import Recipe, Chef
 
 engine = create_engine('postgresql+psycopg2://postgres-user:password@localhost/sql_alchemy_exercise')
 Session = sessionmaker(bind=engine)
@@ -73,3 +73,16 @@ def swap_recipe_ingredients_by_name(first_recipe_name: str, second_recipe_name: 
     )
 
     first_recipe.ingredients, second_recipe.ingredients = second_recipe.ingredients, first_recipe.ingredients
+
+
+@handle_session(session)
+def relate_recipe_with_chef_by_name(recipe_name: str, chef_name: str) -> str:
+    recipe = session.query(Recipe).filter_by(name=recipe_name).one()
+
+    if recipe.chef:
+        raise Exception(f"Recipe: {recipe_name} already has a related chef")
+
+    chef = session.query(Chef).filter_by(name=chef_name).one()
+    recipe.chef = chef
+
+    return f"Related recipe {recipe_name} with chef {chef_name}"

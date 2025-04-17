@@ -26,6 +26,11 @@ class Recipe(Base):
         nullable=False,
     )
 
+    chef_id = Column(
+        Integer,
+        ForeignKey('chefs.id'),
+    )
+
     chef = relationship(
         'Chef',
         back_populates='recipes',
@@ -43,11 +48,6 @@ class Chef(Base):
     name = Column(
         String,
         nullable=False,
-    )
-
-    chef_id = Column(
-        Integer,
-        ForeignKey('chefs.id'),
     )
 
     recipes = relationship(
