@@ -6,12 +6,12 @@ from musicApp.utils import handle_session
 
 @handle_session(session)
 def index(request):
-    ...
+    return render(request, 'common/index.html')
 
 
 @handle_session(session)
 def create_album(request):
-    ...
+    return render(request, 'albums/create-album.html')
 
 
 @handle_session(session)
@@ -31,4 +31,4 @@ def album_details(request, pk: int):
 
 @handle_session(session)
 def create_song(request):
-    ...
+    return render(request, 'songs/create-song.html')
