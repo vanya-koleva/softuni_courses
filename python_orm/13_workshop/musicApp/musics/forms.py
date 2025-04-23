@@ -67,4 +67,7 @@ class SongBaseForm(forms.Form):
 
 
 class SongCreateForm(SongBaseForm):
-    ...
+    music_file_data = forms.FileField(
+        label="Music file:",
+        required=True,
+    )

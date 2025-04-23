@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from musicApp.settings import session
@@ -118,6 +119,7 @@ def create_song(request):
             new_song = Song(
                 song_name=form.cleaned_data['song_name'],
                 album_id=form.cleaned_data['album'],
+                music_file_data=request.FILES['music_file_data'].read(),
             )
 
             session.add(new_song)
@@ -125,3 +127,16 @@ def create_song(request):
             return redirect('index')
 
     return render(request, 'songs/create-song.html', context)
+
+
+@handle_session(session)
+def serve_song(request, album_id: int, song_id: int):
+    song = session.query(Song).filter_by(album_id=album_id, id=song_id).one()
+
+    response = HttpResponse(
+        song.music_file_data,
+        content_type='audio/mpeg'
+    )
+
+    response['Content-Disposition'] = 'inline; filename={}'.format(song.song_name)
+    return response
