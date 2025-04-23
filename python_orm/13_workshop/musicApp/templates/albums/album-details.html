@@ -18,8 +18,8 @@
                 <h4>Price: ${{ album.price }}</h4>
                 <h4>Songs:
                     {% for song in album.songs %}
-                            {{ song.song_name }}
-                    {% if  not forloop.last %} | {% endif %}
+                        <a href="{% url 'play-song' pk=song.id %}">{{ song.song_name }}</a>
+                        {% if  not forloop.last %} | {% endif %}
                     {% endfor %}
                 </h4>
             </div>

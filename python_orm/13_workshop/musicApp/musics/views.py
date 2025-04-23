@@ -130,6 +130,15 @@ def create_song(request):
 
 
 @handle_session(session)
+def play_song(request, pk: int):
+    context = {
+        'song': session.query(Song).filter_by(id=pk).one(),
+    }
+
+    return render(request, 'songs/music-player.html', context)
+
+
+@handle_session(session)
 def serve_song(request, album_id: int, song_id: int):
     song = session.query(Song).filter_by(album_id=album_id, id=song_id).one()
 

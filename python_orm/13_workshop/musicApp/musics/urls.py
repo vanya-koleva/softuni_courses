@@ -1,6 +1,7 @@
 from django.urls import path, include
 
-from musics.views import index, create_album, edit_album, delete_album, album_details, create_song
+from musics.views import index, create_album, edit_album, delete_album, album_details, create_song, serve_song, \
+    play_song
 
 urlpatterns = [
     path('', index, name='index'),
@@ -12,5 +13,7 @@ urlpatterns = [
     ])),
     path('song/', include([
         path('create/', create_song, name='create-song'),
+        path('serve-song/<int:album_id>/<int:song_id>/', serve_song, name='serve-song'),
+        path('play-song/<int:pk>/', play_song, name='play-song'),
     ]))
 ]
