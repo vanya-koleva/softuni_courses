@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 
 from musicApp.settings import session
 from musicApp.utils import handle_session
-from musics.forms import AlbumCreateForm
-from musics.models import Album
+from musics.forms import AlbumCreateForm, SongCreateForm
+from musics.models import Album, Song
 
 
 @handle_session(session)
@@ -50,9 +50,30 @@ def delete_album(request, pk: int):
 
 @handle_session(session)
 def album_details(request, pk: int):
-    ...
+    context = {
+        'album': session.query(Album).filter_by(id=pk).first(),
+    }
+
+    return render(request, 'albums/album-details.html', context)
 
 
 @handle_session(session)
 def create_song(request):
-    return render(request, 'songs/create-song.html')
+    context = {
+        'form': SongCreateForm(),
+    }
+
+    if request.method == 'POST':
+        form = SongCreateForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            new_song = Song(
+                song_name=form.cleaned_data['song_name'],
+                album_id=form.cleaned_data['album'],
+            )
+
+            session.add(new_song)
+
+            return redirect('index')
+
+    return render(request, 'songs/create-song.html', context)

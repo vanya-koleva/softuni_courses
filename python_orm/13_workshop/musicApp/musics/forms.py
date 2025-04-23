@@ -1,5 +1,9 @@
 from django import forms
 
+from musicApp.settings import session
+from musicApp.utils import handle_session
+from musics.models import Album
+
 
 class AlbumBaseForm(forms.Form):
     album_name = forms.CharField(
@@ -29,4 +33,31 @@ class AlbumEditForm(AlbumBaseForm):
 
 
 class AlbumDeleteForm(AlbumBaseForm):
+    ...
+
+
+class SongBaseForm(forms.Form):
+    song_name = forms.CharField(
+        max_length=200,
+        required=True,
+    )
+
+    album = forms.ChoiceField(
+        label="Album:",
+        choices=[],
+    )
+
+    # album = forms.ModelChoiceField(
+    #     label="Album:",
+    #     queryset=Album.objects.all()
+    # )
+
+    @handle_session(session)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        albums = session.query(Album).all()
+        self.fields['album'].choices = [(album.id, album.album_name) for album in albums]
+
+
+class SongCreateForm(SongBaseForm):
     ...
