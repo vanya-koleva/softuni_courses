@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from musicApp.settings import session
 from musicApp.utils import handle_session
-from musics.forms import AlbumCreateForm, SongCreateForm, AlbumEditForm
+from musics.forms import AlbumCreateForm, SongCreateForm, AlbumEditForm, AlbumDeleteForm
 from musics.models import Album, Song
 
 
@@ -72,7 +72,28 @@ def edit_album(request, pk: int):
 
 @handle_session(session)
 def delete_album(request, pk: int):
-    ...
+    album = session.query(Album).filter_by(id=pk).one()
+    form = None
+
+    if request.method == "GET":
+        initial_data = {
+            'album_name': album.album_name,
+            'image_url': album.image_url,
+            'price': album.price,
+        }
+
+        form = AlbumDeleteForm(initial=initial_data)
+
+    if request.method == "POST":
+        session.delete(album)
+        return redirect('index')
+
+    context = {
+        'album': album,
+        'form': form,
+    }
+
+    return render(request, 'albums/delete-album.html', context)
 
 
 @handle_session(session)

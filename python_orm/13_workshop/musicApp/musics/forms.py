@@ -5,6 +5,13 @@ from musicApp.utils import handle_session
 from musics.models import Album
 
 
+class DisabledFieldsMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['disabled'] = True
+
+
 class AlbumBaseForm(forms.Form):
     album_name = forms.CharField(
         label="Album name:",
@@ -32,7 +39,7 @@ class AlbumEditForm(AlbumBaseForm):
     ...
 
 
-class AlbumDeleteForm(AlbumBaseForm):
+class AlbumDeleteForm(DisabledFieldsMixin, AlbumBaseForm):
     ...
 
 

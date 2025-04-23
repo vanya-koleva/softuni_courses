@@ -3,7 +3,7 @@
 {% block content %}
 <!--Edit Page-->
 <section class="editPage">
-    <form>
+    <form method="POST" action="{% url 'delete-album' pk=album.id %}">
         <fieldset>
             <legend>Delete Album</legend>
             <div class="container">
