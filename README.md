@@ -1,5 +1,7 @@
 ## List of Courses
 
+-   [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics)
+
 -   [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm)
 
 -   [PostgreSQL](https://github.com/vanya-koleva/softuni_courses/tree/main/postgresql)
