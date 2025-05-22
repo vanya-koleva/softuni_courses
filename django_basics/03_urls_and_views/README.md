@@ -55,3 +55,40 @@ path('index/<int:pk> ', index_view),
 
     -   It's recommended to use named groups in your regular expressions for better readability and maintainability.
 
+## Views
+
+Function-Based Views (FBVs)
+
+-   Accept an HTTP request and return an HTTP response (or a subclass of it).
+
+-   Besides the request, they can receive other parameters defined in the URL.
+
+## Response Types
+
+-   `HttpResponse`
+
+    -   An object responsible for serializing our response (breaking it into packets, etc.)
+
+    -   An object responsible for serializing our response (breaking it into packets, etc.)
+
+    -   We can pass `content` to it.
+
+    -   We can pass a `status_code` to it.
+
+```python
+   return HttpResponse(content="Hi my name is", status=201)
+```
+
+-   `JsonResponse`
+
+```python
+content = json.dumps({
+  "name": "Dido",
+  "age": 20
+})
+
+return HttpResponse(content=content, content_type="application/json")
+# or
+return JsonResponse(content,)
+```
+
