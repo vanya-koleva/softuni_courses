@@ -55,6 +55,14 @@ path('index/<int:pk> ', index_view),
 
     -   It's recommended to use named groups in your regular expressions for better readability and maintainability.
 
+## `include()`
+
+-   If a **string** is passed to `include()`, Django attempts to import the corresponding URL configuration module. This module must define a `urlpatterns` variable — a list of URL patterns — which Django then iterates over and includes as part of the overall URLconf.
+
+-   If a **list or tuple** of URL patterns is passed directly to `include()`, Django includes the list as-is without attempting to import a module.
+
+-   Whenever you use `include()`, you are extending the current URL path with additional URLs.
+
 ## Views
 
 Function-Based Views (FBVs)
@@ -62,6 +70,8 @@ Function-Based Views (FBVs)
 -   Accept an HTTP request and return an HTTP response (or a subclass of it).
 
 -   Besides the request, they can receive other parameters defined in the URL.
+
+    -   The name of the variable in the URL pattern must match the name of the parameter in the view function.
 
 ## Response Types
 
