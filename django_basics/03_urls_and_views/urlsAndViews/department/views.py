@@ -27,3 +27,7 @@ def file_path_param_view(request, path_to_file):
 
 def uuid_param_view(request, id):
     return HttpResponse(f"<h1>The UUID is: {id}</h1>")
+
+
+def regex_view(request, archive_year):
+    return HttpResponse(f"<h1>The year is: {archive_year}</h1>")
