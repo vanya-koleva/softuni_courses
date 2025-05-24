@@ -49,11 +49,15 @@ path('index/<int:pk> ', index_view),
 -   `re_path`
 
     -   Each captured argument is sent to the view
-        as a string.
+        as a **string**.
 
     -   Always written as a raw string (a string without escapes).
 
-    -   It's recommended to use named groups in your regular expressions for better readability and maintainability.
+    -   It's recommended to use **named groups** in your regular expressions for better readability and maintainability.
+        
+        -   `(?P<name_of_the_group>pattern)`
+        
+        -   If you use both named groups and unnamed groups within a given regex, any unnamed groups are ignored and only named groups are passed to the view function.
 
 ## `include()`
 
