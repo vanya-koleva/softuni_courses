@@ -54,9 +54,9 @@ path('index/<int:pk> ', index_view),
     -   Always written as a raw string (a string without escapes).
 
     -   It's recommended to use **named groups** in your regular expressions for better readability and maintainability.
-        
+
         -   `(?P<name_of_the_group>pattern)`
-        
+
         -   If you use both named groups and unnamed groups within a given regex, any unnamed groups are ignored and only named groups are passed to the view function.
 
 ## `include()`
@@ -109,7 +109,13 @@ return JsonResponse(content,)
 ## Django Shortcuts
 
 -   `render()`
-    -   Renders the context into an HTML template.
+
+    -   Renders the `context` into an HTML template.
+
+        -   `context` - A dictionary containing values that are added to the template context.
+        
+        -   The variable names in the `context` correspond to the variables used in the HTML template.
+
     -   Returns an HttpResponse object with the rendered text.
 
 ```python
@@ -117,7 +123,9 @@ return JsonResponse(content,)
 ```
 
 -   `redirect()`
+
     -   Redirects to another URL.
+
     -   Can be **permanent**
         -   Used when we always want to redirect from this page to another.
 
@@ -131,7 +139,9 @@ redirect('my_view_name', pk=10)  # using view name for better abstraction
     -   Takes a URL name, looks it up among registered names, and returns the URL for that name.
 
 -   `reverse_lazy()`
+
     -   Used for configuration.
+
     -   Loads the URL when it actually exists.
 
 ```python
