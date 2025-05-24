@@ -4,7 +4,9 @@ from department import views
 
 urlpatterns = [
     path('', views.index),
-    path('<int:pk>/', views.int_param_view),
+    path('about/', views.about_view),
+    path('contacts/', views.contacts_view, name='contacts'),
+    path('<int:pk>/', views.int_param_view, name='int-view'),
     path('<uuid:id>/', views.uuid_param_view),
     path('strings/', include([
         path('<slug:slug>/', views.slug_param_view),

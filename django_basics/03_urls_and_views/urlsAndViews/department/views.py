@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from department.models import Department
 
@@ -37,3 +37,10 @@ def uuid_param_view(request, id):
 
 def regex_view(request, archive_year):
     return HttpResponse(f"<h1>The year is: {archive_year}</h1>")
+
+
+def contacts_view(request):
+    return HttpResponse("<h1>Contacts Page</h1>")
+
+def about_view(request):
+    return redirect('int-view', pk=1, permanent=True)
