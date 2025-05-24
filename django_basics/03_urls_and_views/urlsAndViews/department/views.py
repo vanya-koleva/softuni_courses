@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 
 from department.models import Department
 
@@ -17,8 +17,14 @@ def str_param_view(request, name):
 
 
 def slug_param_view(request, slug):
-    department = Department.objects.filter(slug=slug).first()
-    return HttpResponse(department)
+    # department = Department.objects.filter(slug=slug).first()
+    #
+    # if not department:
+    #     raise Http404
+
+    department = get_object_or_404(Department, slug=slug)
+
+    return render(request, "slug_template.html", {"department": department})
 
 
 def file_path_param_view(request, path_to_file):
