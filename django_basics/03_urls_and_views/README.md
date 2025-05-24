@@ -102,3 +102,58 @@ return HttpResponse(content=content, content_type="application/json")
 return JsonResponse(content,)
 ```
 
+## Django Shortcuts
+
+-   `render()`
+    -   Renders the context into an HTML template.
+    -   Returns an HttpResponse object with the rendered text.
+
+```python
+   return render(request, 'core/index.html', context)  # context is optional
+```
+
+-   `redirect()`
+    -   Redirects to another URL.
+    -   Can be **permanent**
+        -   Used when we always want to redirect from this page to another.
+
+```python
+redirect('https://softuni.bg')  # absolute URL since we redirect to another app
+redirect('my_view_name', pk=10)  # using view name for better abstraction
+```
+
+-   `reverse()`
+
+    -   Takes a URL name, looks it up among registered names, and returns the URL for that name.
+
+-   `reverse_lazy()`
+    -   Used for configuration.
+    -   Loads the URL when it actually exists.
+
+```python
+   # settings.py
+   LOGIN_URL = reverse('index') # throws an error
+   LOGIN_URL = reverse_lazy('index') # works fine
+```
+
+-   `resolve_url()`
+
+    -   Uses Django’s URL resolver to find the URL for a view or a model (if the model has get_absolute_url).
+
+-   `get_object_or_404()` / `get_list_or_404()`
+
+```python
+article = get_object_or_404(Article, pk=article_id)
+# If no such Article exists in the database, the function raises a 404 error instead of crashing or returning None.
+```
+
+## Django Errors
+
+-   `raise Http404`
+
+-   `return HttpResponseNotFound`
+
+-   Both achieve the same result.
+
+-   You can customize the 404 page by creating a template named `404.html`.
+
