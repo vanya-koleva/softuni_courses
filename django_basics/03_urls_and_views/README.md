@@ -113,7 +113,7 @@ return JsonResponse(content,)
     -   Renders the `context` into an HTML template.
 
         -   `context` - A dictionary containing values that are added to the template context.
-        
+
         -   The variable names in the `context` correspond to the variables used in the HTML template.
 
     -   Returns an HttpResponse object with the rendered text.
@@ -136,7 +136,9 @@ redirect('my_view_name', pk=10)  # using view name for better abstraction
 
 -   `reverse()`
 
-    -   Takes a URL name, looks it up among registered names, and returns the URL for that name.
+    -   **Takes a URL name**, looks it up among registered names, and **returns the URL for that name**.
+
+    -   When we want to use a URL somewhere (for example, in a template or a view), instead of hardcoding the actual URL path or referencing the view function directly, we use the URL’s `name`. This name is passed to the `reverse()` function, which returns the corresponding URL as a string.
 
 -   `reverse_lazy()`
 
