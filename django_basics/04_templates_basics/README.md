@@ -80,3 +80,63 @@ Hello, Vanya!
 
     -   Must not have side effects (e.g., altering data)
 
+-   Call functions by using them like regular variables
+
+    -   No parenthesis
+
+    -   `{{ some_function }}`
+
+## Filters
+
+-   Used to transform and format data in the template.
+
+-   They are applied using the pipe symbol (`|`), e.g. `{{ value|filter_name }}`.
+
+-   Some filters accept arguments, which are passed using a colon (`:`), e.g. `{{ value|filter_name:arg }}`.
+
+    -   They can receive only one argument.
+
+-   Common built-in filters:
+
+    -   `truncatechars:number`
+
+        -   Truncates the string after a specified number of characters, appending `...` if truncation occurs.
+
+        -   `{{ text|truncatechars:10 }}` → `"Some tex..."`
+
+    -   `truncatewords:number`
+
+        -   Truncates after a given number of words.
+
+        -   `{{ text|truncatewords:3 }}` → `"This is..."`
+
+    -   `join:separator`
+
+        -   Joins a list with the given string as a separator.
+
+        -   `{{ my_list|join:", " }}` → `"a, b, c"`
+
+    -   `date:format_string`
+
+        -   Formats a datetime object according to a specified format string (Django date format syntax).
+
+        -   `{{ my_date|date:"Y-m-d" }}` → `"2025-05-25"`
+
+    -   `default:value`
+
+        -   Outputs the given value if the original variable is falsy.
+
+        -   `{{ username|default:"Guest" }}`
+
+    -   `add:value`
+
+        -   Adds a numeric or string value to the variable.
+
+        -   `{{ count|add:"2" }}` → adds 2 to `count`
+
+    -   `capfirst`
+
+        -   Capitalizes the first character of the string.
+
+        -   `{{ name|capfirst }}` → `"John"`
+
