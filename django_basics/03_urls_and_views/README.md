@@ -83,9 +83,7 @@ Function-Based Views (FBVs)
 
     -   An object responsible for serializing our response (breaking it into packets, etc.)
 
-    -   An object responsible for serializing our response (breaking it into packets, etc.)
-
-    -   We can pass `content` to it.
+    -   We can pass content to it.
 
     -   We can pass a `status_code` to it.
 
