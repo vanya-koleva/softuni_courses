@@ -140,3 +140,111 @@ Hello, Vanya!
 
         -   `{{ name|capfirst }}` → `"John"`
 
+## Tags
+
+-   Enable logic control such as loops, conditionals, and other built-in behaviors directly in templates.
+
+-   Tags that render HTML content typically require closing tags because HTML ignores whitespace, and the logic block must be clearly scoped.
+
+-   Parenthesis cannot be used.
+
+-   "Safe" methods only.
+
+-   `{% url %}` - Reverses URLs using route names defined in urls.py, allowing you to avoid hardcoding URLs in templates.
+    -   This URL can then be used as a variable in your template:
+
+```python
+{% url 'some-view' as var_name %}
+{% if var_name %}
+    # use the URL
+{% endif %}
+```
+
+-   `{% csrf_token %}` - Inserts a CSRF token into your HTML **form** for protection against **Cross-Site Request Forgery**.
+
+    -   A random token is generated on the backend.
+
+    -   Rendered into the frontend.
+
+    -   Automatically validated when a **POST** request is made.
+
+    -   Saves it into a cookie.
+
+```html
+<!-- Example of if, elif, else -->
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+{% elif user.is_staff %}
+    <p>Welcome, staff member!</p>
+{% else %}
+    <p>Welcome, guest! Please log in.</p>
+{% endif %}
+
+<!-- Handling empty URLs -->
+{% if url %}
+    <a href="{{ url }}">Visit this link</a>
+{% else %}
+    <p>No URL provided.</p>
+{% endif %}
+
+<!-- Example of cycle -->
+<ul>
+    {% for employee in employees %}
+        <li>{{ employee.first_name }}</li>
+    {% empty %}
+        <li>No employees in this list.</li>
+    {% endfor %}
+</ul>
+
+<!-- Example of lorem -->
+<p>{% lorem 3 p %}</p>
+```
+
+-   The `for` tag can take an optional `{% empty %}` clause whose text is displayed if the given array is empty or could not be found.
+
+## Static Files
+
+-   Resources that are served to every user of the application and do not change dynamically.
+
+-   CSS & JavaScript files, images, videos, icons, etc.
+
+-   Setup:
+
+```python
+STATIC_URL = "static/"  # Base URL for accessing static resources
+STATICFILES_DIRS = [
+    BASE_DIR / "staticfiles",  # Folder where your static files are stored (create this manually, usually on the level of manage. py)
+]
+```
+
+-   You can then access a static file via URL:
+
+```bash
+https://localhost:8000/static/styles.css
+```
+
+-   Instead of hardcoding the path, use Django's `{% static %}`template tag. This tag automatically prepends the correct `STATIC_URL`, making your code resilient to changes in settings:
+
+```django
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+```
+
+-   `{% load static %}` must be included at the top of your template to use the `{% static %}` tag.
+
+-   **When deploying** your Django app with a production WSGI server like Gunicorn, Django does not serve static files automatically. Gunicorn does not handle static assets; this must be managed separately. In that case, we need another setting:
+
+```python
+STATIC_ROOT = BASE_DIR / 'staticfiles_compiled'
+```
+
+-   Then, run the following command:
+
+```bash
+python manage.py collectstatic
+```
+
+-   This command:
+    -   Collects all static files from your project and third-party apps.
+    -   Places them in the `STATIC_ROOT` directory.
+
