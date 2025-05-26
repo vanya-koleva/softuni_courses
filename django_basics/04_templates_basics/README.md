@@ -225,12 +225,19 @@ https://localhost:8000/static/styles.css
 
 -   Instead of hardcoding the path, use Django's `{% static %}`template tag. This tag automatically prepends the correct `STATIC_URL`, making your code resilient to changes in settings:
 
-```django
+```html
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 ```
 
 -   `{% load static %}` must be included at the top of your template to use the `{% static %}` tag.
+
+-   To include an image in your HTML template, you'll need to set the `src` attribute of the `<img>` tag to the URL of the image file:
+
+```html
+{% load static %}
+<img src="{% static 'my_image.png' %}" alt="My image">
+```
 
 -   **When deploying** your Django app with a production WSGI server like Gunicorn, Django does not serve static files automatically. Gunicorn does not handle static assets; this must be managed separately. In that case, we need another setting:
 
