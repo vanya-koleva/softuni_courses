@@ -1,4 +1,5 @@
 {% load static %}
+{% load markdown_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,8 +19,8 @@
         <div class="posts">
             {% for post in posts %}
                 <div class="post">
-                    <h2>{{post.title|capfirst}}</h2>
-                    <p>{{post.content}}</p>
+                    <h2>{{ post.title|capfirst }}</h2>
+                    <p>{{ post.content|truncatewords:10|markdown }}</p>
                     <div class="post-meta">
                         <span>Post by {{ post.author|default:"Anonymous" }} on {{ post.created_at|date:"d-M-Y" }}</span>
                     </div>

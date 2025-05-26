@@ -19,7 +19,7 @@ def dashboard(request):
             {
                 "title": "how to work with templates?",
                 "author": "",
-                "content": "How can I work with templates in Django? This is my first time using templates.",
+                "content": "**How** <i>can</i> I work with templates in Django? This is my first time using templates.",
                 "created_at": datetime.now()
             },
             {
