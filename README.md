@@ -1,10 +1,10 @@
 ## List of Courses
 
--   [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics) --- With notes
+-   [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics) --- With notes \*
 
--   [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm) --- With notes
+-   [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm) --- With notes \*
 
--   [PostgreSQL](https://github.com/vanya-koleva/softuni_courses/tree/main/postgresql) --- With notes for most lectures
+-   [PostgreSQL](https://github.com/vanya-koleva/softuni_courses/tree/main/postgresql) --- With notes for most lectures \*
 
 -   [JS Front-End](https://github.com/vanya-koleva/softuni_courses/tree/main/js_front_end)
 
@@ -25,4 +25,10 @@ Courses that I am not taking but I solve tasks from them sometimes:
 -   [Programming Basics with JavaScript](https://github.com/vanya-koleva/softuni_courses/tree/main/js_basics)
 
 -   [Programming Basics with C#](https://github.com/vanya-koleva/softuni_courses/tree/main/csharp_basics)
+
+---
+
+## Source Attribution
+
+\*These notes are based on study plans by **Diyan Kalaydzhiev** and expanded with my examples and explanations. Any inaccuracies or misinterpretations are solely my own.
 
