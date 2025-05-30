@@ -1,10 +1,10 @@
 ## List of Courses
 
--   [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics)
+-   [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics) --- With notes
 
--   [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm)
+-   [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm) --- With notes
 
--   [PostgreSQL](https://github.com/vanya-koleva/softuni_courses/tree/main/postgresql)
+-   [PostgreSQL](https://github.com/vanya-koleva/softuni_courses/tree/main/postgresql) --- With notes for most lectures
 
 -   [JS Front-End](https://github.com/vanya-koleva/softuni_courses/tree/main/js_front_end)
 
@@ -20,7 +20,7 @@
 
 ## Other Courses
 
-Courses that I am not taking but I solve tasks from them sometimes because SoftUni is awesome and gives us access to them.
+Courses that I am not taking but I solve tasks from them sometimes:
 
 -   [Programming Basics with JavaScript](https://github.com/vanya-koleva/softuni_courses/tree/main/js_basics)
 
