@@ -92,7 +92,7 @@ Hello, Vanya!
 
 -   They are applied using the pipe symbol (`|`), e.g. `{{ value|filter_name }}`.
 
--   Some filters accept arguments, which are passed using a colon (`:`), e.g. `{{ value|filter_name:arg }}`.
+-   Some filters can accept an argument, which is passed using a colon (`:`), e.g. `{{ value|filter_name:arg }}`.
 
     -   They can receive only one argument.
 
