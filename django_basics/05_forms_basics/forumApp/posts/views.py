@@ -3,32 +3,35 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from posts.forms import SearchForm
+from posts.models import Post
+
+
 def index(request):
-    return HttpResponse("Welcome to the forum app!")
+    return render(request, 'index.html')
 
 
 def dashboard(request):
+    search_form = SearchForm(request.GET)
+    posts = Post.objects.all()
+
+    if request.method == 'GET' and search_form.is_valid():
+        query = search_form.cleaned_data.get('query')
+        posts = Post.filter(title__icontains=query)
+
     context = {
-        "posts": [
-            {
-                "title": "Hello, world!",
-                "author": "John Doe",
-                "content": "This is my first post!",
-                "created_at": datetime.now()
-            },
-            {
-                "title": "how to work with templates?",
-                "author": "",
-                "content": "**How** <i>can</i> I work with templates in Django? This is my first time using templates.",
-                "created_at": datetime.now()
-            },
-            {
-                "title": "How to work with models?",
-                "author": "Jane Doe",
-                "content": "How can I work with models in Django? This is my first time using models.",
-                "created_at": datetime.now()
-            }
-        ]
+        'search_form': search_form,
+        'posts': posts,
     }
 
-    return render(request, 'base.html', context)
+    return render(request, 'posts/dashboard.html', context)
+
+
+def post_details(request, pk:int ):
+    post = Post.objects.get(pk=pk)
+
+    context = {
+        'post': post,
+    }
+
+    return render(request, 'posts/post-details.html', context)

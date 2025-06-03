@@ -1,8 +1,11 @@
-from django.urls import path
+from django.urls import path, include
 
-from posts.views import index, dashboard
+from posts import views
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('dashboard/', dashboard, name='dashboard')
+    path('', views.index, name='index'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('post/', include([
+        path('details/<int:pk>/', views.post_details, name='post-details'),
+    ]))
 ]
