@@ -2,6 +2,8 @@
 {% load markdown_extras %}
 
 {% block content %}
+    {% include 'common/search-bar.html' %}
+    
     <div class="posts">
             {% for post in posts %}
                 <div class="post">

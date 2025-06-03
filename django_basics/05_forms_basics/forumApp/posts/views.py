@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -17,7 +18,13 @@ def dashboard(request):
 
     if request.method == 'GET' and search_form.is_valid():
         query = search_form.cleaned_data.get('query')
-        posts = Post.filter(title__icontains=query)
+        posts = posts.filter(
+            Q(title__icontains=query)
+                |
+            Q(content__icontains=query)
+                |
+            Q(author__icontains=query)
+        )
 
     context = {
         'search_form': search_form,
