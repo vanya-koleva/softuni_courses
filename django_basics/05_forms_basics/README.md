@@ -115,7 +115,18 @@ def index(request):
         -   **On failure**: `form.errors` - A dictionary of errors for fields that failed validation.
 
 -   `form = EmployeeForm()` - Create a blank form.
+
+    -   Used when we need an empty form (e.g., initial GET request).
+
 -   `form = EmployeeForm(request.POST)` - Create a form instance and populate it with data from the request.
+
+    -   Used when handling form submissions (e.g., validation on POST).
+
+-   `form = EployeeForm(request.POST or None)` - If the user has made a POST request and there is data, then load the form with the data. Else, load an empty form.
+
+    -   If POST data exists → `EmployeeForm(request.POST)`
+
+    -   If no POST data → `EmployeeForm()`
 
 ## Form Field Arguments
 
