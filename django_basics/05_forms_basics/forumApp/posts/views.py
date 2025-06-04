@@ -2,9 +2,9 @@ from datetime import datetime
 
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from posts.forms import SearchForm
+from posts.forms import SearchForm, PostCreateForm
 from posts.models import Post
 
 
@@ -42,3 +42,17 @@ def post_details(request, pk:int ):
     }
 
     return render(request, 'posts/post-details.html', context)
+
+
+def add_post(request):
+    form = PostCreateForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect('dashboard')
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'posts/add-post.html', context)

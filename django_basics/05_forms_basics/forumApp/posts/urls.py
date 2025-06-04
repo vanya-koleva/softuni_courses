@@ -7,5 +7,6 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('post/', include([
         path('details/<int:pk>/', views.post_details, name='post-details'),
+        path('add/', views.add_post, name='add-post'),
     ]))
 ]
