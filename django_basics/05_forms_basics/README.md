@@ -10,13 +10,13 @@
 
     -   action
 
-        -   We provide a URL to which we want to send our data
+        -   **where**: We provide a URL to which we want to send our data
 
             -   Default value → current URL
 
     -   method
 
-        -   We specify the HTTP method for our request
+        -   **how**: We specify the HTTP method for our request
 
             -   Default value → `GET`
 
@@ -87,7 +87,7 @@ class EmployeeForm(forms.Form):
 def index(request):
     if request.method == "GET":
         context = {
-            "employee_form": EmployeeForm,
+            "employee_form": EmployeeForm(),
         }
         return render(request, "web/index.html", context)
     else:
@@ -102,5 +102,84 @@ def index(request):
                 "employee_form": form,  # Pass form with errors
             }
             return render(request, "web/index.html", context)
+```
+
+-   `is_valid()`
+
+    -   Runs all validation (built-in and custom) on all the form fields
+
+    -   It populates:
+
+        -   **On success**: `form.cleaned_data` - A dictionary of validated and converted input data.
+
+        -   **On failure**: `form.errors` - A dictionary of errors for fields that failed validation.
+
+-   `form = EmployeeForm()` - Create a blank form.
+-   `form = EmployeeForm(request.POST)` - Create a form instance and populate it with data from the request.
+
+## Form Field Arguments
+
+-   `required`
+
+    -   By default, each Field class in Django assumes that a value is required.
+
+        -   If you pass an empty value, it will raise a `ValidationError`
+
+-   `label`
+
+-   `initial` - The initial value of the field.
+
+-   `help_text`
+
+## Widgets
+
+-   The rendering of the form fields (the HTML).
+
+-   Django uses default widgets according to the data type.
+
+-   We can specify HTML attributes in the widgets' `attrs`
+
+```python
+first_name = forms.CharField(
+    widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "First Name"})
+)
+```
+
+## Working with form templates
+
+-   Use Django's template variable syntax `{{ form }}` to render forms
+
+    -   The output does not include the surrounding `<form>` tags, nor the submit button.
+
+## ModelForm Class
+
+-   Create forms directly from models.
+
+-   Generates form fields based on your model's fields.
+
+-   Provides `form.save()` method to create/update model instances.
+
+```python
+# models.py
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.CharField(max_length=50)
+    publish_date = models.DateField()
+
+# forms.py
+class BookForm(ModelForm):
+    class Meta:
+        model = Book  # Links form to model
+        fields = '__all__'  # Includes all model fields
+        # OR specify fields explicitly:
+        # fields = ['title', 'author']
+```
+
+-   Field selection:
+
+```python
+class Meta:
+    fields = ['title', 'author']  # Whitelist
+    exclude = ['publish_date']     # Blacklist
 ```
 
