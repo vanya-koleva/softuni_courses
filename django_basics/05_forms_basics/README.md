@@ -128,6 +128,24 @@ def index(request):
 
     -   If no POST data → `EmployeeForm()`
 
+## Workflow in the View
+
+-   Give an empty form to the user.
+
+-   When the user fills data into the form:
+
+    -   validate it:
+
+        -   if valid:
+
+            -   save the cleaned_data
+
+            -   redirect the user
+
+        -   if not valid:
+
+            -   give the user the form with the errors
+
 ## Form Field Arguments
 
 -   `required`
@@ -156,7 +174,7 @@ first_name = forms.CharField(
 )
 ```
 
-## Working with form templates
+## Working with Form Templates
 
 -   Use Django's template variable syntax `{{ form }}` to render forms
 
