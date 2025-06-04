@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from posts.forms import SearchForm, PostCreateForm
+from posts.forms import SearchForm, PostCreateForm, PostEditForm
 from posts.models import Post
 
 
@@ -56,3 +56,18 @@ def add_post(request):
     }
 
     return render(request, 'posts/add-post.html', context)
+
+
+def edit_post(request, pk: int):
+    post = Post.objects.get(pk=pk)
+    form = PostEditForm(request.POST or None, instance=post)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect('dashboard')
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'posts/edit-post.html', context)

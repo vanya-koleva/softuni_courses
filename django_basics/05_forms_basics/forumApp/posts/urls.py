@@ -8,5 +8,6 @@ urlpatterns = [
     path('post/', include([
         path('details/<int:pk>/', views.post_details, name='post-details'),
         path('add/', views.add_post, name='add-post'),
+        path('edit/<int:pk>/', views.edit_post, name='edit-post'),
     ]))
 ]
