@@ -212,3 +212,32 @@ class Meta:
     exclude = ['publish_date']     # Blacklist
 ```
 
+-   `instance` binds the form to an existing object.
+
+    -   Without it:
+
+        -   The form renders empty on GET requests.
+
+        -   `form.save()` creates a new object instead of updating the existing one.
+
+```python
+# views.py
+def edit_book(request, book_id):
+    # Fetch the existing book instance
+    book = get_object_or_404(Book, pk=book_id)
+
+    # Initialize form with:
+    #    - Submitted data (if POST)
+    #    - Existing book data (via instance)
+    form = BookForm(request.POST or None, instance=book)
+    if request.method == 'POST' and form.is_valid():
+        form.save()  # Updates existing book record
+        return redirect('book_detail', book_id=book.id)
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'edit_book.html', context)
+```
+
