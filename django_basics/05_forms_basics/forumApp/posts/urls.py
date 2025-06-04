@@ -1,5 +1,4 @@
 from django.urls import path, include
-
 from posts import views
 
 urlpatterns = [
@@ -9,5 +8,6 @@ urlpatterns = [
         path('details/<int:pk>/', views.post_details, name='post-details'),
         path('add/', views.add_post, name='add-post'),
         path('edit/<int:pk>/', views.edit_post, name='edit-post'),
+        path('delete/<int:pk>/', views.delete_post, name='delete-post'),
     ]))
 ]

@@ -7,6 +7,7 @@
             <h2>{{ post.title|capfirst }}</h2>
             <div class="icons">
                 <a href="{% url 'edit-post' post.pk %}">Edit</a>
+                <a href="{% url 'delete-post' post.pk %}">Delete</a>
             </div>
             <p>{{ post.content|truncatewords:10|markdown }}</p>
             <div class="post-meta">

@@ -1,10 +1,7 @@
-from datetime import datetime
-
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from posts.forms import SearchForm, PostCreateForm, PostEditForm
+from posts.forms import SearchForm, PostCreateForm, PostEditForm, PostDeleteForm
 from posts.models import Post
 
 
@@ -71,3 +68,18 @@ def edit_post(request, pk: int):
     }
 
     return render(request, 'posts/edit-post.html', context)
+
+
+def delete_post(request, pk: int):
+    post = Post.objects.get(pk=pk)
+    form = PostDeleteForm(request.POST or None, instance=post)
+
+    if request.method == "POST":
+        post.delete()
+        return redirect('dashboard')
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'posts/delete-post.html', context)
