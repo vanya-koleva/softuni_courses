@@ -33,3 +33,33 @@
 {% endblock %}
 ```
 
+## Template Including
+
+-   To reuse a single HTML file in many places, we can embed/inject it into another HTML file:
+
+```django
+{% include 'reusable-file.html' %}
+```
+
+-   We can **pass parameters** to the included template, which can be accessed like context data.
+
+    -   Use `with` to pass variables:
+
+```django
+{% include 'reusable-file.html' with name="Hello" %}
+```
+
+-   By default, included templates inherit parent context.
+
+-   `only` - Restricts context to **explicitly passed variables only**.
+
+```django
+{% include 'reusable-file.html' with name="Hello" only %}
+```
+
+-   Add `ignore missing` to suppress errors if template doesn't exist.
+
+```django
+{% include 'optional-banner.html' ignore missing %}
+```
+
