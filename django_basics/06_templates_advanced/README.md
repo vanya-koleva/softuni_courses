@@ -51,7 +51,7 @@
 
 -   By default, included templates inherit parent context.
 
--   `only` - Restricts context to **explicitly passed variables only**.
+-   `only` - Restricts context to **explicitly passed variables only**. No access to parent context.
 
 ```django
 {% include 'reusable-file.html' with name="Hello" only %}
@@ -61,5 +61,36 @@
 
 ```django
 {% include 'optional-banner.html' ignore missing %}
+```
+
+## Custom Filters
+
+-   Create a module in our app that **must** be named `templatetags`.
+
+-   Create a Python file inside `templatetags` and define the filter:
+
+```python
+from django import template
+
+register = template.Library()
+
+@register.filter(name='custom_title')
+def custom_title(value):
+    """Capitalizes the first letter of each word, except for specified words"""
+    exceptions = ['and', 'or', 'the', 'in', 'on', 'at', 'to', 'with', 'a', 'an']
+    words = value.split()
+    result = []
+    for word in words:
+        if word.lower() in exceptions and len(result) != 0:
+            result.append(word.lower())
+        else:
+            result.append(word.capitalize())
+    return ' '.join(result)
+```
+
+-   Load the filter in the HTML file:
+
+```django
+{% load my_file_name %}
 ```
 
