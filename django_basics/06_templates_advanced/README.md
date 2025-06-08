@@ -94,3 +94,73 @@ def custom_title(value):
 {% load my_file_name %}
 ```
 
+## Custom Tags
+
+-   Simple Tag – returns a string:
+
+```python
+from django import template
+
+register = template.Library()
+
+@register.simple_tag
+def simple_tag_example():
+    return "This is a simple tag"
+```
+
+-   Inclusion Tag – returns an HTML string based on a template:
+
+```python
+   from django import template
+
+   register = template.Library()
+
+   @register.inclusion_tag('user_info.html', takes_context=True)
+   def user_info(context, user, extra_info):
+       return {
+           'user': user,
+           'extra_info': extra_info,
+           'request': context['request']
+       }
+
+   <div class="user-info">
+       <h2>User Information</h2>
+       <p>Username: {{ user.username }}</p>
+       <p>Email: {{ user.email }}</p>
+       <p>Extra Info: {{ extra_info }}</p>
+   </div>
+
+   {% load my_tags %}
+
+   <div>
+       {% user_info user "Additional details about the user" %}
+   </div>
+```
+
+-   Tag – returns a Template Node with a render function
+
+```python
+from django import template
+from django.template import Node
+
+register = template.Library()
+
+class UppercaseNode(Node):
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+
+    def render(self, context):
+        output = self.nodelist.render(context)
+        return output.upper()
+
+@register.tag(name="uppercase")
+def do_uppercase(parser, token):
+    nodelist = parser.parse(('enduppercase',))
+    parser.delete_first_token()
+    return UppercaseNode(nodelist)
+```
+
+## Bootstrap
+
+-   [Link](https://getbootstrap.com/)
+
