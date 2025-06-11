@@ -56,3 +56,15 @@ class EvenValidator:
         )
 ```
 
+## ModelForm Factory
+
+-   We can create ModelForms using `modelform_factory`
+
+-   Allows dynamic form creation
+
+-   We can generate different forms for different users or based on some conditions
+
+```python
+PersonForm = modelform_factory(Person, fields=('__all__', ))
+```
+
