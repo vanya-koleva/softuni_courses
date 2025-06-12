@@ -68,3 +68,88 @@ class EvenValidator:
 PersonForm = modelform_factory(Person, fields=('__all__', ))
 ```
 
+## Customizing Forms
+
+-   We can iterate through all fields in `__init__` and make them readonly (this can be done using a mixin)
+
+```python
+# mixins.py
+
+class ReadOnlyFieldsMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['readonly'] = True
+```
+
+```python
+# forms.py
+
+from django import forms
+from .models import Person
+
+class PersonForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = ['name', 'age', 'email']
+
+        labels = {  # custom labels
+            'name': 'Your Name',
+            'age': 'Your Age',
+            'email': 'Your Email',
+        }
+
+        error_messages = {  # custom error messages
+            'name': {
+                'required': 'This field is required.',
+                'max_length': 'Name cannot be longer than 100 characters.',
+                'unique': 'Should be unique',
+            },
+            'age': {
+                'required': 'This field is required.',
+                'invalid': 'Enter a valid age.',
+            },
+            'email': {
+                'required': 'This field is required.',
+                'invalid': 'Enter a valid email address.',
+            },
+        }
+```
+
+-   We can validate form fields with `clean_<fieldname>()` methods:
+
+```python
+# forms.py
+
+from django import forms
+from .models import Person
+from django.core.exceptions import ValidationError
+
+class PersonForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = ['first_name', 'last_name', 'age', 'email']
+
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if not first_name.isalpha():
+            raise ValidationError('First name should contain only alphabetic characters.')
+        return first_name
+```
+
+-   Use the `clean()` method for cross-field validation:
+
+```python
+    def clean(self):
+     cleaned_data = super().clean()
+     last_name = cleaned_data.get("last_name")
+     age = cleaned_data.get("age")
+
+     if last_name and last_name.startswith("A"):
+         if age is None or age < 18:
+             raise ValidationError("If your last name starts with 'A', you must be at least 18 years old.")
+
+     return cleaned_data
+```
+
