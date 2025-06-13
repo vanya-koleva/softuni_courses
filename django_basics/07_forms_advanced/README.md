@@ -153,3 +153,28 @@ class PersonForm(forms.ModelForm):
      return cleaned_data
 ```
 
+## `save()`
+
+-   A method of `ModelForm`
+
+-   Takes one parameter `commit` (default is `True`)
+
+```python
+    def save(self, commit=True):
+     # Get the unsaved Person instance
+     person = super().save(commit=False)
+
+     # Custom logic before saving
+     person.first_name = person.first_name.capitalize()
+     person.last_name = person.last_name.capitalize()
+
+     # Save the instance if commit is True
+     if commit:
+         person.save()
+
+     # Custom logic after saving, e.g., sending a notification
+     # send_notification(person)  # hypothetical function
+
+     return person
+```
+
