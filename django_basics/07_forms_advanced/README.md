@@ -152,6 +152,14 @@ class PersonForm(forms.ModelForm):
 
 -   Use the `clean()` method for cross-field validation:
 
+    -   `cleaned_data = super().clean()`
+
+        -   Field-specific validation (`clean_fieldname`) is already done.
+
+        -   All fields have been parsed, cleaned, and put into cleaned_data.
+
+        -   This lets you perform additional cross-field validation afterwards.
+
 ```python
     def clean(self):
      cleaned_data = super().clean()
