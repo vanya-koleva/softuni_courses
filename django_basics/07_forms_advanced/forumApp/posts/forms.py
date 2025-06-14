@@ -1,5 +1,6 @@
 from django import forms
 
+from posts.mixins import ReadOnlyFieldsMixin
 from posts.models import Post
 
 
@@ -29,12 +30,8 @@ class PostEditForm(PostBaseForm):
     pass
 
 
-class PostDeleteForm(PostBaseForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        for field in self.fields:
-            self.fields[field].disabled = True
+class PostDeleteForm(ReadOnlyFieldsMixin, PostBaseForm):
+    pass
 
 
 class SearchForm(forms.Form):
