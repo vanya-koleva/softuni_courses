@@ -70,6 +70,18 @@ PersonForm = modelform_factory(Person, fields=('__all__', ))
 
 ## Customizing Forms
 
+#### Overriding `__init__`
+
+-   For manipulations, setting default values, etc.
+
+-   If you want something to happen with your form:
+
+    -   before it’s rendered to the user.
+
+    -   when the data is loaded into it, before anything else is done.
+
+---
+
 -   We can iterate through all fields in `__init__` and make them readonly (this can be done using a mixin)
 
 ```python
