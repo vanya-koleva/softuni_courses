@@ -256,3 +256,27 @@ def manage_authors(request, book_id):
            {% endfor %}
 ```
 
+### Crispy Forms
+
+-   Gives more control over form layout and styling
+
+-   Installation:
+
+```bash
+pip install django-crispy-forms
+pip install crispy-bootstrap4
+```
+
+-   Add to `INSTALLED_APPS`:
+
+```py
+'crispy_forms',
+'crispy_bootstrap4',
+```
+
+-   In `settings.py`:
+
+```py
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+```
+
