@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from posts.mixins import ReadOnlyFieldsMixin
 from posts.models import Post
@@ -20,6 +21,17 @@ class PostBaseForm(forms.ModelForm):
                 'max_length': "Hey, that's too much",
             }
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        title = cleaned_data.get('title')
+        content = cleaned_data.get('content')
+
+        if title.lower() in content.lower():
+            raise ValidationError("The title shouldn't be included in the content.")
+
+        return cleaned_data
 
 
 class PostCreateForm(PostBaseForm):
