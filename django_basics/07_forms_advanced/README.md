@@ -207,3 +207,52 @@ def manage_authors(request, book_id):
     return render(request, 'manage_authors.html', {'formset': formset, 'book': book})
 ```
 
+## Styling Forms
+
+-   Rendering:
+
+```py
+   {{ form.as_p }}
+   {{ form.as_ul }}
+   {{ form.as_div }}
+   {{ form.as_table }}
+```
+
+-   Adding CSS classes:
+
+```py
+   self.fields['email'].widget.attrs['class'] = 'my-css-class'
+```
+
+-   Iterating over form fields in a template:
+
+```py
+   {% for field in form %}
+               <div class="form-group">
+                   <label for="{{ field.id_for_label }}">
+                       {{ field.label }}
+                       {% if field.field.required %}*{% endif %}
+                       {# Display field properties for demonstration #}
+                       (Type: {{ field.field.widget.input_type }},
+                        Max Length: {{ field.field.max_length }},
+                        Required: {{ field.field.required }})
+                   </label>
+                   <input
+                       type="{{ field.field.widget.input_type }}"
+                       name="{{ field.html_name }}"
+                       id="{{ field.id_for_label }}"
+                       class="{{ field.field.widget.attrs.class }}"
+                       placeholder="{{ field.field.widget.attrs.placeholder }}"
+                       maxlength="{{ field.field.max_length }}"
+                       {% if field.value %} value="{{ field.value }}"{% endif %}
+                   >
+                   {# Display errors if any #}
+                   {% if field.errors %}
+                       <div class="error">
+                           {{ f ield.errors }}
+                       </div>
+                   {% endif %}
+               </div>
+           {% endfor %}
+```
+
