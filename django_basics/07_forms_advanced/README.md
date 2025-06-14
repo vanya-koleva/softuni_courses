@@ -178,3 +178,32 @@ class PersonForm(forms.ModelForm):
      return person
 ```
 
+## Formsets
+
+-   Allow us to create and manage multiple forms at once
+
+-   For example, in a quiz app, each question could be a separate form
+
+```python
+AuthorFormSet = modelformset_factory(Author, form=AuthorForm, extra=3)
+
+# views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Book, Author
+from .forms import AuthorFormSet
+
+def manage_authors(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        formset = AuthorFormSet(request.POST, queryset=book.authors.all())
+        if formset.is_valid():
+            authors = formset.save(commit=False)
+            for author in authors:
+                author.book = book
+                author.save()
+            return redirect('book_detail', book_id=book.id)
+    else:
+        formset = AuthorFormSet(queryset=book.authors.all())
+    return render(request, 'manage_authors.html', {'formset': formset, 'book': book})
+```
+
