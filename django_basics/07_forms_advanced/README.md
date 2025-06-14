@@ -280,3 +280,31 @@ pip install crispy-bootstrap4
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 ```
 
+## Working with Media Files
+
+-   For videos, images, and audio files
+
+-   We need the **Pillow** library
+
+```py
+# models.py
+
+class MyModel:
+
+   image_field = models.ImageField(
+      upload_to="/"
+   )
+
+# settings.py
+MEDIA_ROOT = (
+   BASE_DIR / 'mediafiles',
+)
+
+# views.py
+...
+form = form(request.POST, request.FILES)
+
+# tempate form param
+enctype="multipart/form-data"
+```
+
