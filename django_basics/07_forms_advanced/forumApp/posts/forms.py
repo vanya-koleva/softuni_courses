@@ -22,6 +22,14 @@ class PostBaseForm(forms.ModelForm):
             }
         }
 
+    def clean_author(self):
+        author = self.cleaned_data.get('author')
+
+        if not author.isalpha():
+            raise ValidationError('Author name must contain only letters')
+
+        return author
+
     def clean(self):
         cleaned_data = super().clean()
 
