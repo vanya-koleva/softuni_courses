@@ -41,6 +41,18 @@ class PostBaseForm(forms.ModelForm):
 
         return cleaned_data
 
+    def save(self, commit=True):
+        post = super().save(commit=False)
+
+        post.author = post.author.capitalize()
+
+        if commit:
+            post.save()
+
+        # send_notifications()...
+
+        return post
+
 
 class PostCreateForm(PostBaseForm):
     pass
