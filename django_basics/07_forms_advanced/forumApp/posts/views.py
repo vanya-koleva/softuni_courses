@@ -1,7 +1,8 @@
 from django.db.models import Q
+from django.forms import modelform_factory
 from django.shortcuts import render, redirect
 
-from posts.forms import SearchForm, PostCreateForm, PostEditForm, PostDeleteForm
+from posts.forms import SearchForm, PostCreateForm, PostDeleteForm, PostEditForm
 from posts.models import Post
 
 
@@ -57,6 +58,12 @@ def add_post(request):
 
 def edit_post(request, pk: int):
     post = Post.objects.get(pk=pk)
+
+    if request.user.is_superuser:
+        PostEditForm = modelform_factory(Post, fields='__all__')
+    else:
+        PostEditForm = modelform_factory(Post, fields=('content',),)
+
     form = PostEditForm(request.POST or None, instance=post)
 
     if request.method == "POST" and form.is_valid():
