@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from posts.mixins import ReadOnlyFieldsMixin
-from posts.models import Post
+from posts.models import Post, Comment
 
 
 class PostBaseForm(forms.ModelForm):
@@ -76,3 +76,21 @@ class SearchForm(forms.Form):
         )
     )
 
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+        labels = {
+            'content': '',
+        }
+
+        widgets = {
+            'content': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter your comment...'
+                }
+            )
+        }

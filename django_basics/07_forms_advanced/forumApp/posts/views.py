@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.forms import modelform_factory
 from django.shortcuts import render, redirect
 
-from posts.forms import SearchForm, PostCreateForm, PostDeleteForm, PostEditForm
+from posts.forms import SearchForm, PostCreateForm, PostDeleteForm, CommentForm
 from posts.models import Post
 
 
@@ -34,9 +34,18 @@ def dashboard(request):
 
 def post_details(request, pk:int ):
     post = Post.objects.get(pk=pk)
+    comment_form = CommentForm(request.POST or None)
+
+    if request.method == 'POST' and comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+        comment.author = request.user.username
+        comment.post = post
+        comment.save()
+        return redirect('post-details', pk=post.pk)
 
     context = {
         'post': post,
+        'comment_form': comment_form,
     }
 
     return render(request, 'posts/post-details.html', context)
