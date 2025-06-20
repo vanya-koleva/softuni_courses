@@ -61,3 +61,16 @@ urlpatterns = [
 ]
 ```
 
+-   `as_view`
+
+    -   Returns the view as a callable
+
+    -   Can be called with kwargs
+
+```py
+urlpatterns = [
+     # Redirect to 'https://www.example.com/'
+     path('redirect-example/', CustomRedirectView.as_view(url='https://www.example.com/'), name='custom-redirect'),
+ ]
+```
+
