@@ -53,7 +53,7 @@ def post_details(request, pk:int ):
 
 
 def add_post(request):
-    form = PostCreateForm(request.POST or None)
+    form = PostCreateForm(request.POST or None, request.FILES or None)
 
     if request.method == "POST" and form.is_valid():
         form.save()
