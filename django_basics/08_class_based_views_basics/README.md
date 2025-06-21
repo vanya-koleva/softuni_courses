@@ -141,3 +141,60 @@ urlpatterns = [
      simulate_request(my_view, 'POST')
 ```
 
+## Types of Views
+
+-   **TemplateView** – Displays a template
+
+```py
+   class MyTemplateView(TemplateView):
+   # static template
+    template_name = "my_template.html"
+
+   # dynamic template
+   def get_template_names(self):
+   pass
+
+   # static context
+   extra_context = {
+      "title": "hello",
+   }
+
+   # Dynamic context
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the default context
+        context = super().get_context_data(**kwargs)
+
+        # Add extra context
+        context['title'] = 'My Template View'
+        context['user_status'] = 'Active'
+        context['random_number'] = 42
+        context['items'] = ['Apple', 'Banana', 'Cherry']
+
+        return context
+```
+
+-   **RedirectView**
+
+```py
+   from django.views.generic.base import RedirectView
+
+   class MyRedirectView(RedirectView):
+       url = 'https://www.example.com/'  # The URL to redirect to
+```
+
+-   **CreateView, UpdateView, DeleteView**
+
+    -   Receives model, template, success_url and fields, and generates a form that handles GET and POST
+
+    -   `get_success_url` allows us to retrieve the success_url dynamically
+
+```py
+   # views.py
+
+   class BookCreateView(CreateView):
+       model = Book
+       fields = ['title', 'author', 'published_date']
+       template_name = 'book_form.html'  # The template that will be used to render the form
+       success_url = reverse_lazy('book-list')  # Redirect to the book list view after a successful creation
+```
+
