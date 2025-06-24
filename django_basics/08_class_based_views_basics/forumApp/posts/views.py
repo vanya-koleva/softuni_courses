@@ -3,8 +3,9 @@ from datetime import datetime
 from django.db.models import Q
 from django.forms import modelform_factory
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.utils.decorators import classonlymethod
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentForm, CommentFormSet
 from posts.models import Post
@@ -141,3 +142,11 @@ def delete_post(request, pk: int):
     }
 
     return render(request, 'posts/delete-post.html', context)
+
+
+class MyRedirectView(RedirectView):
+    # url = 'http://localhost:8000/dashboard/'
+    # pattern_name = 'dashboard'
+
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('dashboard') + "?query=Django"
