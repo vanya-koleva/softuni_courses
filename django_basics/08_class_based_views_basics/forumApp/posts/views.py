@@ -5,7 +5,7 @@ from django.forms import modelform_factory
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import classonlymethod
-from django.views.generic import TemplateView, RedirectView, CreateView, UpdateView
+from django.views.generic import TemplateView, RedirectView, CreateView, UpdateView, DeleteView, FormView
 
 from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentForm, CommentFormSet, PostEditForm
 from posts.models import Post
@@ -148,19 +148,31 @@ def post_details(request, pk: int):
     return render(request, 'posts/post-details.html', context)
 
 
-def delete_post(request, pk: int):
-    post = Post.objects.get(pk=pk)
-    form = PostDeleteForm(instance=post)
+class DeletePost(DeleteView, FormView):
+    model = Post
+    form_class = PostDeleteForm
+    template_name = 'posts/delete-post.html'
+    success_url = reverse_lazy('dashboard')
 
-    if request.method == "POST":
-        post.delete()
-        return redirect('dashboard')
+    def get_initial(self):
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        post = self.model.objects.get(pk=pk)
+        return post.__dict__
 
-    context = {
-        "form": form,
-    }
 
-    return render(request, 'posts/delete-post.html', context)
+# def delete_post(request, pk: int):
+#     post = Post.objects.get(pk=pk)
+#     form = PostDeleteForm(instance=post)
+#
+#     if request.method == "POST":
+#         post.delete()
+#         return redirect('dashboard')
+#
+#     context = {
+#         "form": form,
+#     }
+#
+#     return render(request, 'posts/delete-post.html', context)
 
 
 class MyRedirectView(RedirectView):
