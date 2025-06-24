@@ -3,9 +3,9 @@ from datetime import datetime
 from django.db.models import Q
 from django.forms import modelform_factory
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import classonlymethod
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView, RedirectView, CreateView
 
 from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentForm, CommentFormSet
 from posts.models import Post
@@ -74,18 +74,25 @@ def dashboard(request):
     return render(request, 'posts/dashboard.html', context)
 
 
-def add_post(request):
-    form = PostCreateForm(request.POST or None, request.FILES or None)
+class CreatePost(CreateView):
+    model = Post
+    form_class = PostCreateForm
+    success_url = reverse_lazy('dashboard')
+    template_name = 'posts/add-post.html'
 
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        return redirect('dashboard')
 
-    context = {
-        "form": form,
-    }
-
-    return render(request, 'posts/add-post.html', context)
+# def add_post(request):
+#     form = PostCreateForm(request.POST or None, request.FILES or None)
+#
+#     if request.method == "POST" and form.is_valid():
+#         form.save()
+#         return redirect('dashboard')
+#
+#     context = {
+#         "form": form,
+#     }
+#
+#     return render(request, 'posts/add-post.html', context)
 
 
 def edit_post(request, pk: int):
