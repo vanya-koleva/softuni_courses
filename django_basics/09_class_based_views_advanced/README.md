@@ -52,3 +52,9 @@ class PaginatedBookListView(ListView):
     </div>
 ```
 
+## Detail View
+
+-   Similar to ListView, but works with a **single object**
+
+<img src="https://codefellows.github.io/sea-python-401d6/_images/DetailView.png" />
+
