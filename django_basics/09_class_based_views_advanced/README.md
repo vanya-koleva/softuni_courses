@@ -108,3 +108,11 @@ class PaginatedBookListView(ListView):
 
     -   **Static alternative**: If you want to always use the same context and template, you can define them statically via methods like `get_context_data()` and `get_template_names()`.
 
+## Decorators
+
+-   Often used to modify the behavior of a given method.
+
+-   `login_required`
+
+-   `permission_required`
+
