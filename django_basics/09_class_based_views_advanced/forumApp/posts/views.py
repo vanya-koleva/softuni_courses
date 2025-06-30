@@ -7,7 +7,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import classonlymethod
 from django.views import View
-from django.views.generic import TemplateView, RedirectView, CreateView, UpdateView, DeleteView, FormView, DetailView
+from django.views.generic import TemplateView, RedirectView, CreateView, UpdateView, DeleteView, FormView, DetailView, \
+    ListView
 from django.views.generic.edit import FormMixin
 
 from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentForm, CommentFormSet, PostEditForm
@@ -55,28 +56,56 @@ class IndexView(TemplateView):
         return ['jhfqwkandoixeu', 'index.html']
 
 
+class Dashboard(ListView):
+    model = Post
+    template_name = 'posts/dashboard.html'
+    paginate_by = 4
+    query_param = "query"
+    form_class = SearchForm
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        kwargs.update({
+            "search_form": self.form_class(),
+            "query": self.request.GET.get(self.query_param, ''),
+        })
+        return super().get_context_data(object_list=object_list, **kwargs)
 
-def dashboard(request):
-    search_form = SearchForm(request.GET)
-    posts = Post.objects.all()
+    def get_queryset(self):
+        queryset = self.model.objects.all()
+        search_value = self.request.GET.get(self.query_param)
 
-    if request.method == "GET" and search_form.is_valid():
-        query = search_form.cleaned_data.get('query')
-        posts = posts.filter(
-            Q(title__icontains=query)
+        if search_value:
+            queryset = queryset.filter(
+                Q(title__icontains=search_value)
                 |
-            Q(content__icontains=query)
+                Q(content__icontains=search_value)
                 |
-            Q(author__icontains=query)
-        )
+                Q(author__icontains=search_value)
+            )
 
-    context = {
-        "posts": posts,
-        "search_form": search_form,
-    }
+        return queryset
 
-    return render(request, 'posts/dashboard.html', context)
+
+# def dashboard(request):
+#     search_form = SearchForm(request.GET)
+#     posts = Post.objects.all()
+#
+#     if request.method == "GET" and search_form.is_valid():
+#         query = search_form.cleaned_data.get('query')
+#         posts = posts.filter(
+#             Q(title__icontains=query)
+#                 |
+#             Q(content__icontains=query)
+#                 |
+#             Q(author__icontains=query)
+#         )
+#
+#     context = {
+#         "posts": posts,
+#         "search_form": search_form,
+#     }
+#
+#     return render(request, 'posts/dashboard.html', context)
 
 
 class CreatePost(CreateView):
