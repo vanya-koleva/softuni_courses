@@ -13,6 +13,7 @@ from django.views.generic.edit import FormMixin
 
 from posts.decorators import measure_execution_time
 from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentForm, CommentFormSet, PostEditForm
+from posts.mixins import TimeRestrictedMixin
 from posts.models import Post
 
 
@@ -110,7 +111,7 @@ class Dashboard(ListView):
 #     return render(request, 'posts/dashboard.html', context)
 
 
-class CreatePost(CreateView):
+class CreatePost(TimeRestrictedMixin, CreateView):
     model = Post
     form_class = PostCreateForm
     success_url = reverse_lazy('dashboard')
@@ -131,7 +132,7 @@ class CreatePost(CreateView):
 #     return render(request, 'posts/add-post.html', context)
 
 
-class EditPost(UpdateView):
+class EditPost(TimeRestrictedMixin, UpdateView):
     model = Post
     success_url = reverse_lazy('dashboard')
     template_name = 'posts/edit-post.html'
