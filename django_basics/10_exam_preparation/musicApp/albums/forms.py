@@ -1,4 +1,6 @@
 from django import forms
+
+from albums.mixins import ReadOnlyMixin
 from albums.models import Album
 
 
@@ -41,4 +43,8 @@ class AlbumCreateForm(AlbumBaseForm):
 
 
 class AlbumEditForm(AlbumBaseForm):
+    ...
+
+
+class AlbumDeleteForm(ReadOnlyMixin, AlbumBaseForm):
     ...

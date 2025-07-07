@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView
-from albums.forms import AlbumCreateForm, AlbumEditForm
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from albums.forms import AlbumCreateForm, AlbumEditForm, AlbumDeleteForm
 from albums.models import Album
 from common.utils import get_profile
 
@@ -29,3 +29,17 @@ class AlbumEditView(UpdateView):
     template_name = 'album-edit.html'
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('home')
+
+
+class AlbumDeleteView(DeleteView):
+    model = Album
+    form_class = AlbumDeleteForm
+    template_name = 'album-delete.html'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('home')
+
+    def get_initial(self) -> dict:
+        return self.object.__dict__
+
+    def form_invalid(self, form: AlbumDeleteForm):
+        return self.form_valid(form)
