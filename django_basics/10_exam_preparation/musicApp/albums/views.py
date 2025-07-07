@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView
-from albums.forms import AlbumCreateForm
+from django.views.generic import CreateView, DetailView, UpdateView
+from albums.forms import AlbumCreateForm, AlbumEditForm
 from albums.models import Album
 from common.utils import get_profile
 
@@ -21,3 +21,11 @@ class AlbumDetailsView(DetailView):
     model = Album
     template_name = 'album-details.html'
     pk_url_kwarg = 'id'
+
+
+class AlbumEditView(UpdateView):
+    model = Album
+    form_class = AlbumEditForm
+    template_name = 'album-edit.html'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('home')

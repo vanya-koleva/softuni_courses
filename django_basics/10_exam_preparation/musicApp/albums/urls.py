@@ -6,5 +6,6 @@ urlpatterns = [
     path('add/', views.AlbumCreateView.as_view(), name='create-album'),
     path('<int:id>/', include([
         path('details/', views.AlbumDetailsView.as_view(), name='album-details'),
+        path('edit/', views.AlbumEditView.as_view(), name='edit-album'),
     ]))
 ]
