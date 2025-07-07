@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 
 PROJECT_APPS =[
     'albums',
-    'profiles'
+    'profiles',
+    'common',
 ]
 
 INSTALLED_APPS = [
