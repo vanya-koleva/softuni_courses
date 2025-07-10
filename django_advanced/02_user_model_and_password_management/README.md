@@ -24,3 +24,27 @@
 
         -   The `staff_member_required` decorator
 
+    -   **`USERNAME_FIELD`** allows us to override the field that will be used as the primary credential
+
+    -   **`email_user()`** allows us to send emails to users after configuring SMTP
+
+    -   **`AnonymousUser`** - not a model but a class that overrides all attributes of the base class
+
+    -   Provides two main functions:
+
+        -   **`login`** – attaches a cookie for the authenticated user
+
+        -   **`authenticate`** – checks whether the user’s credentials are valid
+
+    -   **`get_user_model()`** – returns the currently active user model used in the application
+
+## Login
+
+-   Django's Built-in `LoginView`
+
+-   When using `LoginView`, we get access to the following parameters:
+
+    -   **`next`** - Helps redirect the user to the view they tried to access before logging in
+
+    -   **`site`** - The URL of the website
+
