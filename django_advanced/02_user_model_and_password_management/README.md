@@ -79,3 +79,14 @@ LOGOUT_REDIRECT_URL = '/'
            fields = ('username', 'email')
 ```
 
+## Passwords
+
+-   Use one-way hash
+-   We have views for changing passwords
+
+## Groups
+
+-   `has_perm()`
+-   `PermissionsMixin`
+-   `permission_required()` – decorator
+
