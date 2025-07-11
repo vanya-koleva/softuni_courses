@@ -48,3 +48,34 @@
 
     -   **`site`** - The URL of the website
 
+## Register
+
+-   We don't have a view for registration, but we do have a form
+
+```py
+class UserRegisterView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('login')
+
+
+# settings.py - optional
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+ <form method="post" action="{% url 'login' %}{% if next %}?next={{ next }}{% endif %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+ </form>
+```
+
+-   The form only works with Django's built-in User, but there is a way to change that
+
+```py
+   class CustomUserCreationForm(UserCreationForm):
+       class Meta(UserCreationForm.Meta):
+           model = get_user_model()  # Use the custom user model
+           fields = ('username', 'email')
+```
+
