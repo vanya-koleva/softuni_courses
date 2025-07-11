@@ -1,5 +1,7 @@
 ## List of Courses
 
+-   [Django Advanced](https://github.com/vanya-koleva/softuni_courses/tree/main/django_advanced)
+
 -   [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics) --- With notes \*
 
 -   [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm) --- With notes \*
