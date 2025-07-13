@@ -1,8 +1,9 @@
 from datetime import datetime
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.forms import modelform_factory
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, RedirectView, CreateView, UpdateView, DeleteView, FormView, DetailView, \
@@ -10,7 +11,7 @@ from django.views.generic import TemplateView, RedirectView, CreateView, UpdateV
 from django.views.generic.edit import FormMixin
 
 from posts.decorators import measure_execution_time
-from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentForm, CommentFormSet, PostEditForm
+from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentFormSet
 from posts.mixins import TimeRestrictedMixin
 from posts.models import Post
 
@@ -35,13 +36,23 @@ class IndexView(TemplateView):
         return ['jhfqwkandoixeu', 'index.html']
 
 
+def approve_post(request, pk):
+    if request.method == "POST":
+        post = Post.objects.get(pk=pk)
+        post.approved = True
+        post.save()
+
+        return redirect('dashboard')
+
+
 @method_decorator(name='dispatch', decorator=measure_execution_time)
-class Dashboard(ListView):
+class Dashboard(ListView, PermissionRequiredMixin):
     model = Post
     template_name = 'posts/dashboard.html'
     paginate_by = 4
     query_param = "query"
     form_class = SearchForm
+    permission_required = 'posts.approve_post'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs.update({
@@ -53,6 +64,9 @@ class Dashboard(ListView):
     def get_queryset(self):
         queryset = self.model.objects.all()
         search_value = self.request.GET.get(self.query_param)
+
+        if not self.has_permission():
+            queryset = queryset.filter(approved=True)
 
         if search_value:
             queryset = queryset.filter(

@@ -40,6 +40,15 @@ class Post(models.Model):
         null=True,
     )
 
+    approved = models.BooleanField(
+        default=False,
+    )
+
+    class Meta:
+        permissions = [
+            ("approve_post", "Can approve post")
+        ]
+
 
 class Comment(models.Model):
     post = models.ForeignKey(

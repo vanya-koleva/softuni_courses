@@ -10,7 +10,7 @@ from posts.models import Post, Comment
 class PostBaseForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = '__all__'
+        exclude = ('approved',)
 
         widgets = {
             'language': forms.RadioSelect(
@@ -102,14 +102,3 @@ class CommentForm(forms.ModelForm):
 
 
 CommentFormSet = formset_factory(CommentForm, extra=1)
-
-
-
-
-
-
-
-
-
-
-
