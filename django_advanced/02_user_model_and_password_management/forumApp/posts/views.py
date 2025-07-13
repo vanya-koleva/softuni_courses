@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.forms import modelform_factory
 from django.urls import reverse, reverse_lazy
@@ -65,7 +66,7 @@ class Dashboard(ListView):
         return queryset
 
 
-class CreatePost(TimeRestrictedMixin, CreateView):
+class CreatePost(LoginRequiredMixin, TimeRestrictedMixin, CreateView):
     model = Post
     form_class = PostCreateForm
     success_url = reverse_lazy('dashboard')

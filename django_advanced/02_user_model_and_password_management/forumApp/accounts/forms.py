@@ -12,6 +12,6 @@ class CustomUserCreationForm(UserCreationForm):
 
         help_texts = {
             'username': '',
-            'password': '',
+            'password': '', # has to go through the __init__ because it is dynamically created
             'email': '',
         }
