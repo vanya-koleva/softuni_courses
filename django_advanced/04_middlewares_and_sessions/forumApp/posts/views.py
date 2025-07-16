@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.forms import modelform_factory
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
@@ -14,6 +15,11 @@ from posts.decorators import measure_execution_time
 from posts.forms import PostCreateForm, PostDeleteForm, SearchForm, CommentFormSet
 from posts.mixins import TimeRestrictedMixin
 from posts.models import Post
+
+
+def counter_view(request):
+    request.session['counter'] = request.session.get('counter', 0) + 1
+    return HttpResponse(f"View count: {request.session['counter']}")
 
 
 class IndexView(TemplateView):
