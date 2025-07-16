@@ -47,3 +47,26 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        AppUser,
+        on_delete=models.CASCADE,
+    )
+
+    age = models.IntegerField(
+        null=True,
+        blank=True,
+    )
+
+    points = models.IntegerField(
+        null=True,
+        blank=True,
+    )
+
+    phone_number = models.CharField(
+        max_length=10,
+        null=True,
+        blank=True,
+    )
