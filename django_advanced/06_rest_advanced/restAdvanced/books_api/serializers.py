@@ -1,0 +1,46 @@
+from rest_framework import serializers
+from books_api.models import Book, Author
+
+
+class AuthorSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ["name"]
+        model = Author
+
+
+class BookSerializer(serializers.ModelSerializer):
+    authors = AuthorSimpleSerializer(many=True)  # read_only=True
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+    def create(self, validated_data: dict):
+        authors = validated_data.pop('authors')  # [{"name": "Some name"}, ...]
+        authors_names = [a.get('name') for a in authors]  # ["Some name",...]
+
+        """
+         validated_data = {
+             "title": "Some book",
+             "pages": 200,
+             "description": "Book by Softuni"
+         }
+         """
+
+        book = Book.objects.create(**validated_data)
+
+        existing_authors = Author.objects.filter(name__in=authors_names)  # [<Author object in mem>, ...]
+        new_author_names = (
+                set(authors_names)  # ["Some author", "Nakov"]
+                -
+                set(existing_authors.values_list('name', flat=True))  # ["Some author"]
+        )  # ("Nakov",)
+
+        new_authors = [Author(name=name) for name in new_author_names]
+        created_authors = Author.objects.bulk_create(new_authors)
+
+        all_authors = list(existing_authors) + list(created_authors)
+        book.authors.set(all_authors)
+
+        return book
+
