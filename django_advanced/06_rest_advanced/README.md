@@ -157,3 +157,95 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['text', 'created_by']
 ```
 
+## Generic Views
+
+-   We can combine them, i.e., we can have a `RetrieveDestroyView`, which includes `get` and `delete`.
+
+## Actions
+
+-   A template for creating URLs in REST.
+
+-   Example: We have books, and each book can have a comment.
+
+-   Incorrect: `api/books/4` – where 4 is the ID of the book.
+
+-   **Correct**: `api/books/4/comment` – this is called an action. This way, there’s no confusion about what the ID belongs to.
+
+## Authentication
+
+-   `rest_framework.authtoken`
+
+-   An app that contains a view called `ObtainAuthToken`.
+
+    -   Here, we can generate a token for an existing user.
+
+-   Login
+
+```py
+class LoginAPIView(token_views.ObtainAuthToken)
+   pass
+```
+
+-   Register
+
+```py
+ from django.contrib.auth import get_user_model
+ from rest_framework import serializers
+
+ UserModel = get_user_model()
+
+ class RegisterSerializer(serializers.ModelSerializer):
+     password = serializers.CharField(write_only=True)  # Prevent password from being read
+
+     class Meta:
+         model = UserModel
+         fields = ['username', 'email', 'password']  # Adjust fields based on your User model
+
+     def create(self, validated_data):
+         # Use the create_user method to create a user
+         user = UserModel.objects.create_user(
+             username=validated_data['username'],
+             email=validated_data['email'],
+             password=validated_data['password']  # create_user automatically handles hashing
+         )
+         return user
+
+ from django.contrib.auth import get_user_model
+ from rest_framework import generics
+ from rest_framework.response import Response
+ from rest_framework import status
+
+ UserModel = get_user_model()
+
+ class RegisterApiView(generics.CreateAPIView):
+     queryset = UserModel.objects.all()
+     serializer_class = RegisterSerializer
+```
+
+## Permissions
+
+-   We can use Django mixins, but it's more common to use **permission classes**:
+
+    -   `IsAuthenticated`
+    -   `AllowAny`
+    -   `IsAdminUser`
+    -   `IsAuthenticatedOrReadOnly`
+    -   `BasePermission` (for creating custom permissions)
+
+```py
+from rest_framework.permissions import BasePermission
+
+class IsOwner(BasePermission):
+    """
+    Custom permission to only allow owners of an object to access or modify it.
+    """
+    def has_object_permission(self, request, view, obj):
+        # Assumes the object has an 'owner' attribute. You can adjust this as needed.
+        return obj.owner == request.user
+
+class MyModelDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MyModel.objects.all()
+    serializer_class = MyModelSerializer
+    permission_classes = [IsOwner]  # Use the custom permission
+```
+
