@@ -1,9 +1,10 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from books_api.models import Book
-from books_api.serializers import BookSerializer
+from books_api.models import Book, Publisher
+from books_api.serializers import BookSerializer, BookSimpleSerializer, PublisherSerializer, \
+    PublisherHyperlinkSerializer
 
 
 class ListBooksView(generics.ListAPIView):
@@ -13,7 +14,7 @@ class ListBooksView(generics.ListAPIView):
 
 class BookViewSet(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    serializer_class = BookSimpleSerializer
 
 
 @api_view(['POST'])
@@ -25,3 +26,13 @@ def create_book(request):
         serializer.data,
         status.HTTP_201_CREATED
     )
+
+
+class PublisherViewSet(viewsets.ModelViewSet):
+    queryset = Publisher.objects.all()
+    serializer_class = PublisherSerializer
+
+
+class PublisherHyperlinkView(generics.ListAPIView):
+    queryset = Publisher.objects.all()
+    serializer_class = PublisherHyperlinkSerializer
