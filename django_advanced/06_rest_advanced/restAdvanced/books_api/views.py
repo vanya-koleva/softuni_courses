@@ -1,5 +1,7 @@
 from rest_framework import generics, status, viewsets
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from books_api.models import Book, Publisher
@@ -15,6 +17,8 @@ class ListBooksView(generics.ListAPIView):
 class BookViewSet(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSimpleSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 @api_view(['POST'])
