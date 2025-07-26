@@ -1,10 +1,11 @@
 from rest_framework import generics, status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.response import Response
 
 from books_api.models import Book, Publisher
+from books_api.permissions import IsAuthor
 from books_api.serializers import BookSerializer, BookSimpleSerializer, PublisherSerializer, \
     PublisherHyperlinkSerializer
 
@@ -18,7 +19,7 @@ class BookViewSet(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSimpleSerializer
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthor]
 
 
 @api_view(['POST'])
