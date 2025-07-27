@@ -249,3 +249,71 @@ class MyModelDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwner]  # Use the custom permission
 ```
 
+## Exceptions
+
+-   Custom errors
+
+```py
+   class NotOwnerException(APIException):
+       status_code = 403  # HTTP status code for Forbidden
+       default_detail = "You do not have permission to perform this action."  # Default error message
+       default_code = 'not_owner'
+```
+
+-   Custom handler
+
+```py
+from rest_framework.views import exception_handler  # Import the default DRF exception handler
+from rest_framework.response import Response  # Import DRF's Response class
+from rest_framework.exceptions import APIException  # Import DRF's base API exception
+from rest_framework import status  # Import status codes
+
+def custom_exception_handler(exc, context):
+    """
+    Custom exception handler to modify the response for exceptions.
+
+    Args:
+    - exc: The exception instance that was raised.
+    - context: A dictionary containing information about the context in which the exception was raised (including the view).
+
+    Returns:
+    - Response: A DRF Response object that modifies the error response.
+    """
+
+    # Call DRF's default exception handler first, to get the standard error response.
+    response = exception_handler(exc, context)
+
+    # If the response is not None, it means DRF has already handled the exception.
+    if response is not None:
+        # Modify the response for custom behavior (if needed)
+        # You can add custom data or wrap the error in a different structure.
+
+        # Example: Adding a custom error message or structure to the response
+        response.data['status_code'] = response.status_code  # Add status code to the response
+        response.data['error_type'] = exc.__class__.__name__  # Add the type of exception to the response
+
+        # Optionally, you could modify specific responses for certain exceptions
+        if isinstance(exc, APIException):
+            # Handle general APIException separately (e.g., add more context)
+            response.data['detail'] = str(exc)  # Add the exception message as 'detail'
+
+    else:
+        # If the response is None, it means DRF's default handler didn't handle this exception.
+        # You can create a custom response here.
+
+        # Example: Creating a custom response for unhandled exceptions
+        return Response({
+            "detail": "Something went wrong",  # Custom error message
+            "error": str(exc),  # Include the string representation of the exception
+            "error_type": exc.__class__.__name__,  # Include the type of the exception
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  # Return 500 status for server errors
+
+    # Return the modified response or the original response from the default handler.
+    return response
+
+// settings.py
+REST_FRAMEWORK = {
+ 'EXCEPTION_HANDLER': 'your_project.your_module.custom_exception_handler',  # Replace with your actual path
+}
+```
+
