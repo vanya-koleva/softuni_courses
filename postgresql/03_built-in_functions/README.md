@@ -41,6 +41,7 @@
 -   `CAST(variable AS data_type)` -> cast variable to data_type.
 
     -   `::` is another way to cast.  
+        
         `::` is postges specific, `CAST` is SQL standart
 
 -   `POSITION(pattern IN string)` - return the position(index) of the pattern in a string. Returns 0 if no pattern found.
@@ -97,7 +98,9 @@ SELECT POSITION('sub' IN 'This is a substring example') AS position; -- 11
 
 ```sql
 SELECT 13 / 6; -- 2
+
 SELECT 13.0 / 6; --2.1666666666666667 numeric
+
 SELECT 13::real / 6; -- 2.1666666666666665 double precision
 ```
 
@@ -123,29 +126,37 @@ SELECT PI() AS pi_value;
 
 ```sql
 SELECT TRUNC(123.456); -- 123
+
 SELECT TRUNC(123, 2); -- 123.00 numeric
 ```
 
 -   `FLOOR`, `CEIL`
 
 -   `SIGN(number)` - returns the sign of a given numeric value. It outputs:  
-     1 if the number is positive,  
-     -1 if the number is negative,  
-     0 if the number is zero.
+     
+    1 if the number is positive,  
+     
+    -1 if the number is negative,  
+     
+    0 if the number is zero.
 
 -   `RANDOM()` - generates a random value between 0 (inclusive) and 1 (exclusive).  
+    
     Number between 0 and 6:
 
 ```sql
-SELECT CEIL(RANDOM() * 100) % 7 AS random_mod_7;
+SELECT (CEIL(RANDOM() * 100))::int % 7 AS random_mod_7;
 ```
 
 ## Date Functions
 
 -   `EXTRACT (part FROM DATE)` - PART - YEAR, MONTH, DAY, MINUTES…  
+    
     e.g.: `extract('YEAR' FROM DATE)`
 
--   `AGE(first_date, second_date)` - find the difference between two dates. It subtracts the second argument from the first one and returns an interval as a result. Example:  
+-   `AGE(first_date, second_date)` - find the difference between two dates. It subtracts the second argument from the first one and returns an interval as a result.  
+    
+    Example:  
     `AGE(died, born) AS "Life Span"`
 
 -   `INTERVAL` - Data type. Duration of time.  
@@ -154,13 +165,16 @@ SELECT CEIL(RANDOM() * 100) % 7 AS random_mod_7;
 ```sql
 SELECT (10 * INTERVAL '1 day') AS interval_value;
 -- 10 days
+
 SELECT '2025-01-01'::DATE + INTERVAL '10 days';
 -- 2025-01-11 00:00:00
 ```
 
 -   `TO_CHAR(date, format)` - formats the date according to the format
     -   `TO_CHAR(NOW() AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI:SS TZD');`  
+        
         Result: '2023-09-20 12:34:56 UTC'
+
 -   `TO_CHAR(data)` -> convert data to a string
 
 To see all time zones:
@@ -173,8 +187,11 @@ To see current date/time:
 
 ```sql
 SELECT CURRENT_DATE;  -- 2025-01-18
+
 SELECT CURRENT_TIME;  --13:46:17.495425+00:00
+
 SELECT NOW();  -- 2025-01-18 13:47:36.195425+00:00
+
 SELECT CURRENT_TIMESTAMP; -- 2025-01-18 14:25:33.306674+00
 ```
 
@@ -183,12 +200,15 @@ SELECT CURRENT_TIMESTAMP; -- 2025-01-18 14:25:33.306674+00
 -   `expression LIKE pattern` - similar to regex - match text values against a pattern, based on whether something starts/ends on a pattern
 
     -   `%` - 0 or more characters
+    
     -   `_` - any single character, exact position
 
     -   `LIKE` – case-sensitive
+    
     -   `ILIKE` - case-insensitive
 
 -   `ESCAPE` – specify a prefix to treat special characters as normal.  
+    
     `WHERE last*name LIKE '%l!*%' ESCAPE '!';`
 
 -   `REGEXP_MATCH(string, pattern [, flags])`
