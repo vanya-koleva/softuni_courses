@@ -1,5 +1,15 @@
 # Linux and Linux Shell
 
+## Command Syntax Basics
+- Most Linux commands follow this pattern:
+  ```bash
+  command [options] [arguments]
+  ```
+
+- **Options**: Modify command behavior (usually `-single-letter` or `--full-word`)
+
+- **Arguments**: Files, directories, or values the command acts upon
+
 ## Common Commands
 
 - `whoami` - Display the currently logged-in user
@@ -14,7 +24,7 @@
 
   - `-v` - Show confirmation message
 
-- `cp source destination`
+- `cp source destination` - Copy files and directories
   
   - `cp file1.txt file2.txt` - creates a new file named file2.txt with the same content.
 
@@ -22,9 +32,17 @@
 
   - `cp -r project/ backup/` - copy the whole project folder into backup (recursive)
 
-- `mv source dest`
+- `mv source dest` - Move/Rename files
 
-- `rm file or dir`
+- `rm file or dir` - Remove files or directories
+
+- `pwd` - Print the current working directory
+
+- `head [options] [files]` - Output the first part (10 lines by default) of files
+
+- `tail [options] [files]` - The last part
+
+- `cat` - Read data from the file and return the content as output
 
 ### `top` - Display all active processes
   
@@ -209,3 +227,36 @@ crw-rw----  1 root tty  136, 1 Oct 30 08:00 tty1
   - Shared libraries needed by system programs in `/bin` and `/sbin`.
   
   - Includes kernel modules
+
+## Standard File Descriptors (FDs)
+
+| Descriptor | Name            | Number | Purpose                      | Default Device | Example Redirect |
+| ---------- | --------------- | ------ | ---------------------------- | -------------- | ---------------- |
+| stdin      | Standard Input  | 0      | Input to a program           | Keyboard       | `< input.txt`    |
+| stdout     | Standard Output | 1      | Normal output from a program | Screen         | `> output.txt`   |
+| stderr     | Standard Error  | 2      | Error messages               | Screen         | `2> errors.txt`  |
+
+### Combining and Redirecting
+
+#### Redirection Operators
+
+| Operator | Redirects       | Behavior         | Example                    |
+| -------- | --------------- | ---------------- | -------------------------- |
+| `<`      | stdin           | Read from file   | `cat < hello.txt`          |
+| `>`      | stdout          | Overwrite file   | `ls > list.txt`            |
+| `>>`     | stdout          | Append to file   | `ls >> list.txt`           |
+| `2>`     | stderr          | Overwrite errors | `ls /bad/path 2> err.txt`  |
+| `2>>`    | stderr          | Append errors    | `ls /bad/path 2>> err.txt` |
+| `&>`     | stdout + stderr | Overwrite both   | `cmd &> all.txt`           |
+| `&>>`    | stdout + stderr | Append both      | `cmd &>> all.txt`          |
+
+#### More Examples
+
+| Command                        | Meaning                                                  |
+| ------------------------------ | -------------------------------------------------------- |
+| `command < input.txt`          | Redirect **stdin** from file instead of the keyboard     |
+| `command > out.txt`            | Redirect **stdout** to a file instead of the terminal    |
+| `command 2> err.txt`           | Redirect **stderr** to file                              |
+| `command > out.txt 2> err.txt` | Redirect both separately                                 |
+| `command &> all.txt`           | Redirect **both stdout + stderr** together (bash syntax) |
+| `command > out.txt 2>&1`       | Redirect stderr (2) to the same place as stdout (1)      |
