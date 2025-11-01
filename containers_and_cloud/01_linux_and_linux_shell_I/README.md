@@ -260,3 +260,65 @@ crw-rw----  1 root tty  136, 1 Oct 30 08:00 tty1
 | `command > out.txt 2> err.txt` | Redirect both separately                                 |
 | `command &> all.txt`           | Redirect **both stdout + stderr** together (bash syntax) |
 | `command > out.txt 2>&1`       | Redirect stderr (2) to the same place as stdout (1)      |
+
+## Command Sequences
+
+- **Sequential** - `;`
+  
+  - Runs all commands, one after another, no matter what happens.
+
+```bash
+mkdir test ; cd test ; touch file.txt
+```
+
+- **Pipe (Connected sequential)** - `|`
+  
+  - Sends the output of the previous command directly to the next one.
+
+```bash
+cat file.txt | grep "error"
+```
+
+- **Conditional (Success)** - `&&`
+
+  - Runs the next command **only if** the previous one **succeeds**.
+
+```bash
+mkdir project && cd project
+```
+
+- **Conditional (Failure)** - `||`
+
+  - Runs the next command **only if** the previous one **fails**.
+
+```bash
+mkdir project || echo "Failed to create directory"
+```
+- Combining `&&` and `||`
+  
+  - Acts like an if–else
+
+```bash
+mkdir project && echo "OK" || echo "Failed"
+```
+
+## Command Substitution
+
+- Run a command inside another command and use its output as text.
+
+- Syntax:
+```bash
+$(command)
+
+# or
+
+`command`
+```
+
+- Backticks are older; `$( )` is preferred — clearer and supports nesting.
+
+```bash
+echo "Today is $(date)"
+
+echo "Current user: $(whoami), Current directory: $(pwd)"
+```
