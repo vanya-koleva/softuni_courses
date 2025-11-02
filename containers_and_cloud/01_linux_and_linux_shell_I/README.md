@@ -10,6 +10,20 @@
 
 - **Arguments**: Files, directories, or values the command acts upon
 
+- **Command help**:
+
+  ```bash
+  # For shell built-ins:
+  help command
+
+  # For most external programs:
+  command -h
+  command --help
+
+  # For detailed manual:
+  man command
+  ```
+
 ## Common Commands
 
 - `whoami` - Display the currently logged-in user
