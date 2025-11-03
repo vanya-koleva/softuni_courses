@@ -174,3 +174,93 @@ export PATH=$PATH:/my/custom/bin
 export EDITOR=vim                
 unset TMP_VAR                    
 ```
+
+## SSH (Secure Shell)
+
+- Allows connecting to a remote machine's console
+
+```bash
+ssh [options] [user@]hostname
+
+ssh hostname -l user
+```
+- `ssh` - invokes the SSH client program
+
+- `192.168.0.28` - IP address (or hostname) of the remote machine
+
+- `-l root` - specifies the login name (in this case, the root user)
+
+## Processes and Jobs
+
+-   **All Jobs are Processes**, but not all Processes are Jobs.
+
+-   A **Process** is the OS's view of a running program.
+
+-   A **Job** is the Shell's view of a process or pipeline that *it is managing*.
+
+| Feature | Process | Job |
+| :--- | :--- | :--- |
+| **Manager** | Linux Kernel | Shell (Bash, Zsh, etc.) |
+| **Identifier** | Process ID (PID) | Job ID (JID) e.g., `[1]` |
+| **Scope** | System-wide | Local to a specific shell session |
+| **Grouping** | A single unit of execution | Can be a single process or a pipeline |
+| **Control** | Kernel scheduler, signals (`kill`) | Shell built-ins (`fg`, `bg`, `jobs`) |
+| **Lifetime** | Can outlive the parent shell (daemon) | Typically dies when the parent shell exits |
+
+- **Examples of Processes:**
+  
+  - The `ls` command
+  
+  - Firefox browser (firefox)
+
+- **Examples of Jobs:**
+
+  - Starting `vim` to edit a file. It's a process, but the shell sees it as a job and gives it control of the terminal (a **foreground job**).
+  
+  - Starting `sleep 1000 &`. The `&` puts it in the background. The shell reports: `[1] 12345`. Here, `[1]` is the Job ID and `12345` is the PID.
+  
+  - A command pipeline: `find / -name "*.conf" 2>/dev/null | head -n 20 &`. The entire `find | head` pipeline is one job.
+
+### Commands
+
+- List jobs:
+
+```bash
+jobs [options] [jobspec]
+```
+
+- List processes:
+
+```bash
+ps
+top
+htop
+```
+
+- Kill a job or process: 
+
+```bash
+kill [options] pid | jobspec
+```
+
+- Run command in background
+
+```bash
+command &
+```
+
+- Suspend current job - `CTRL + Z`
+
+## More Linux Commands
+
+- `wget` - A free utility for non-interactive download of files from the Web
+
+```bash
+wget [options] URL
+```
+
+- `curl` - A tool for transferring data from or to a server
+
+```bash
+curl [options] URL
+```
