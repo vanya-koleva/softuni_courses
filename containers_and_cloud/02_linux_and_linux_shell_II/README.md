@@ -72,6 +72,8 @@
 
 - Change the permissions of a file or directory for all types of users
 
+- 💡 To execute a script the user must also have read permission (interpreter must read the code).
+
 - **Octal mode**:
     
   - `chmod 600 file` - Only the owner can read and write
@@ -111,6 +113,10 @@ chmod +x script.sh      # The '+' defaults to 'a' (all)
 
 - `chgrp [options] group file` is usually used when changing only group
 
+```bash
+chown [options] [owner][:[group]] file
+```
+
 | Command | Effect |
 |---------|--------|
 | `chown alice file` | Change owner to 'alice' |
@@ -121,3 +127,50 @@ chmod +x script.sh      # The '+' defaults to 'a' (all)
 | `chown --from=alice bob file.txt` | Change owner only if current owner is 'alice' |
 | `chown --from=old_owner:old_group new_owner:new_group file-or-dir` | only change files that currently have a specific owner and/or group (either can be omitted) |
 
+## 🌍 Environment Variables
+
+- ⚙️ Provide config settings to Linux apps
+
+- Exported variables are available to child processes
+
+- Names use `CAPITAL_LETTERS` by convention
+
+- No spaces: `VAR=value`
+
+- Case-sensitive
+
+- 🛠️ **Commands**:
+
+    - List all environment variables:
+    
+    ```bash
+    env
+    printenv
+    ``` 
+
+    - Print a single environment variable:
+
+    ```bash
+    printenv HOME
+    echo $HOME
+    ```
+
+    - Set a new environment variable. Changes in current session only (use config files for permanence):
+
+    ```bash
+    export VAR=VALUE
+    ```
+
+    - Unset variable:
+
+    ```bash
+    unset VARIABLE_NAME
+    ```
+
+- Examples:
+
+```bash
+export PATH=$PATH:/my/custom/bin
+export EDITOR=vim                
+unset TMP_VAR                    
+```
