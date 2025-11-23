@@ -98,7 +98,85 @@ docker images
 docker ps
 
 docker logs [container]
+
+docker start [container]
+
+docker stop [container]
+
+docker rm [container]
+
+docker rmi [image]
+
+# Open a shell inside a running container
+docker exec -it [container] /bin/sh
+
+docker inspect [container]
+
+docker top [container]
 ```
+
+### Common Command Flags
+
+```bash
+# Basic structure
+docker run [FLAGS] IMAGE [COMMAND]
+```
+
+- **`-d`** or **`--detach`**
+  
+  - Run container in background (detached mode)
+  
+  - Returns control to terminal immediately
+
+- **`-it`** 
+  
+  - **`-i`** = Keep STDIN open (interactive)
+  
+  - **`-t`** = Allocate a pseudo-TTY (terminal)
+  
+  - Combined: Creates an interactive shell session
+
+- **`--rm`**
+  
+  - Automatically remove container when it exits
+  
+  - Useful for temporary/testing containers
+
+- **`-p`** or **`--publish`**
+  
+  - Map container port to host port
+  
+  - Format: `-p HOST_PORT:CONTAINER_PORT`
+  
+```bash
+docker run -p 8080:80 nginx    # Host:8080 → Container:80
+```
+
+- **`-P`** or **`--publish-all`**
+  
+  - Publish all exposed ports to random host ports
+
+- **`-e`** or **`--env`**
+  
+  - Set environment variables inside container
+
+- **`--env-file`**
+  
+  - Load environment variables from file
+
+- **`--name`**
+  
+  - Assign custom name to container (instead of random)
+
+- **`-v`** or **`--volume`**
+  
+  - Mount volumes/bind mounts
+
+- **`-w`** or **`--workdir`**
+  
+  - Sets the working directory inside the container
+  
+  - The command will execute from this directory
 
 ## Data in Docker Containers
 
@@ -138,7 +216,7 @@ docker logs [container]
 
 - Files are stored on host in your specified location.
 
-- Docker does not manage the storage—it relies on the host filesystem.
+- Docker does not manage the storage - it relies on the host filesystem.
 
 - Potential security issue - container has broad access to user data
 
