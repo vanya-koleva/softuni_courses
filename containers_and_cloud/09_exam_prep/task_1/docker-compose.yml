@@ -1,0 +1,46 @@
+services:
+    mongo:
+        networks:
+            - goals
+        container_name: mongodb
+        volumes:
+            - data:/data/db
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+            - MONGO_INITDB_ROOT_PASSWORD=secret
+        image: mongo
+    goals-backend:
+        volumes:
+            - logs:/logs
+        networks:
+            - goals
+        container_name: backend
+        ports:
+            - 80:80
+        # environment:
+        #   - MONGODB_USERNAME=mongoadmin
+        #   - MONGODB_PASSWORD=secret
+        image: serendipitysoftuni/goals-backend
+        # If you want to build the image locally instead of pulling from Docker Hub, uncomment the lines below
+        # and comment out the image line above
+        # build:
+        #     context: ./backend
+        #     dockerfile: Dockerfile
+
+    goals-frontend:
+        networks:
+            - goals
+        container_name: frontend
+        ports:
+            - 3000:3000
+        image: serendipitysoftuni/goals-frontend
+        # If you want to build the image locally instead of pulling from Docker Hub, uncomment the lines below
+        # and comment out the image line above
+        # build:
+        #     context: ./frontend
+        #     dockerfile: Dockerfile
+networks:
+    goals:
+volumes:
+    data:
+    logs:

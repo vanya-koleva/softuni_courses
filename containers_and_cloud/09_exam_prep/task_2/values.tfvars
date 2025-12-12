@@ -1,0 +1,6 @@
+prefix          = "Watchlist"
+location        = "Sweden Central"
+subscription_id = "00000000-0000-0000-0000-000000000000"
+repo_url        = "https://github.com/Azure-Samples/python-docs-hello-world"
+admin_login     = "4dm1n157r470r"
+admin_password  = "4-v3ry-53cr37-p455w0rd"
