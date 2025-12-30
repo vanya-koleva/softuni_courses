@@ -1,36 +1,15 @@
-## List of Courses
+# SoftUni Courses
 
--   [Django Advanced](https://github.com/vanya-koleva/softuni_courses/tree/main/django_advanced)
+A comprehensive collection of course notes, task solutions, and projects from my Software Engineering education at [SoftUni](https://softuni.bg/). This repository serves as both a personal knowledge base and a resource for others following a similar learning path.
 
--   [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics) --- With notes \*
+## 🗺️ Learning Paths & Courses
 
--   [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm) --- With notes \*
+The courses below are organized by technology stack and recommended progression.
 
--   [PostgreSQL](https://github.com/vanya-koleva/softuni_courses/tree/main/postgresql) --- With notes for most lectures \*
-
--   [JS Front-End](https://github.com/vanya-koleva/softuni_courses/tree/main/js_front_end)
-
--   [HTML and CSS](https://github.com/vanya-koleva/softuni_courses/tree/main/html_and_css)
-
--   [Python OOP](https://github.com/vanya-koleva/softuni_courses/tree/main/python_oop)
-
--   [Python Advanced](https://github.com/vanya-koleva/softuni_courses/tree/main/python_advanced)
-
--   [Programming Fundamentals with Python](https://github.com/vanya-koleva/softuni_courses/tree/main/fundamentals)
-
--   [Programming Basics with Python](https://github.com/vanya-koleva/softuni_courses/tree/main/Programming_Basics)
-
-## Other Courses
-
-Courses that I am not taking but I solve tasks from them sometimes:
-
--   [Programming Basics with JavaScript](https://github.com/vanya-koleva/softuni_courses/tree/main/js_basics)
-
--   [Programming Basics with C#](https://github.com/vanya-koleva/softuni_courses/tree/main/csharp_basics)
-
----
-
-## Source Attribution
-
-\*These notes are based on study plans by **Diyan Kalaydzhiev** and expanded with my examples and explanations. Any inaccuracies or misinterpretations are solely my own.
-
+| Stage | Python | **C#** | **Front-End** | Back-End & Databases |
+| :--- | :--- | :--- | :--- | :--- |
+| **🟢 Fundamentals** | [Programming Basics with Python](https://github.com/vanya-koleva/softuni_courses/tree/main/Programming_Basics) | [C# Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/csharp_basics) | [JS Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/js_basics)<br>[HTML and CSS](https://github.com/vanya-koleva/softuni_courses/tree/main/html_and_css) | |
+| **🟡 Core Concepts** | [Programming Fundamentals](https://github.com/vanya-koleva/softuni_courses/tree/main/fundamentals) | [C# Fundamentals](https://github.com/vanya-koleva/softuni_courses/tree/main/csharp_fundamentals) | [JS Front-End](https://github.com/vanya-koleva/softuni_courses/tree/main/js_front_end) | [PostgreSQL](https://github.com/vanya-koleva/softuni_courses/tree/main/postgresql) |
+| **🔴 Advanced Topics** | [Python Advanced](https://github.com/vanya-koleva/softuni_courses/tree/main/python_advanced)<br>[Python OOP](https://github.com/vanya-koleva/softuni_courses/tree/main/python_oop)<br>(leads to →) | | | [Python ORM](https://github.com/vanya-koleva/softuni_courses/tree/main/python_orm) |
+| **⚫ Professional Stack** | | | | [Django Basics](https://github.com/vanya-koleva/softuni_courses/tree/main/django_basics) → [Django Advanced](https://github.com/vanya-koleva/softuni_courses/tree/main/django_advanced) |
+| **🛠️ Tools & DevOps** | | | | [Software Engineering & DevOps](https://github.com/vanya-koleva/softuni_courses/tree/main/software_engineering_and_devOps)<br>[Containers and Cloud](https://github.com/vanya-koleva/softuni_courses/tree/main/containers_and_cloud) |
